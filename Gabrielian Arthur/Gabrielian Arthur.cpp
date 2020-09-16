@@ -1,11 +1,4 @@
-﻿// Gabrielian Arthur.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
+﻿// Советы по началу работы 
 //   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
 //   2. В окне Team Explorer можно подключиться к системе управления версиями.
 //   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
@@ -14,21 +7,22 @@
 //   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 struct Pipe
 {
-    int id1;
+    string id;
     int diametr;
     int dlina;
-    string remont;
+    bool need_to_repair = false;
 
 };
 
 struct KS
 {
-    int id2;
+    string id;
     string Name;
     int cehi;
     int cehivrabote;
@@ -36,10 +30,48 @@ struct KS
 
 };
 
+Pipe createPipe()
+{
+ Pipe m;
+
+ m.id = " ";
+
+ cout << "Enter the length" << endl;
+ cin >> m.dlina;
+
+ cout << "Enter the length" << endl;
+ cin >> m.diametr;
+ 
+ return m;
+}
+
+KS createKS()
+{
+    KS hj;
+
+    hj.id = " ";
+
+    cout << "Enter number of workshops" << endl;
+
+    cin >> hj.cehi;
+
+    cout << "Enter the number of working worksohps" << endl;
+    cin >> hj.cehivrabote;
+
+    return hj;
+}
+
 int main()
 
 {
-    cout << "Hello World" << endl;
-    int ch;
-   cin >> ch;}
+    Pipe m;
+    m = createPipe();
+
+    KS hj;
+    hj = createKS();
+    //cout << "Hello World" << endl;
+    //int ch;
+    //cin >> ch;
+    return 0;
+}
 
