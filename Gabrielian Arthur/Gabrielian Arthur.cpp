@@ -17,9 +17,29 @@
 
 using namespace std;
 
+struct Pipe
+{
+    int id1;
+    int diametr;
+    int dlina;
+    string remont;
+
+};
+
+struct KS
+{
+    int id2;
+    string Name;
+    int cehi;
+    int cehivrabote;
+    int effektiv;
+
+};
+
 int main()
+
 {
     cout << "Hello World" << endl;
     int ch;
-    cin >> ch;
-}
+   cin >> ch;}
+
