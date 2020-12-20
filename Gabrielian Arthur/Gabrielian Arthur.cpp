@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
-//#include <vector>
+#include <vector>
 using namespace std;
 
 struct CS
@@ -10,111 +10,167 @@ struct CS
 	string Name;
 	int amount_workshops;
 	int amount_running_workshops;
-	float effect;
+	float efficiency;
 };
 struct Pipe
 {
 	int id;
 	int diametr;
 	int length;
-	string is_broken;
+	bool is_broken;
 };
-int proverka1(float m, int max, int min, string s)
-{
-	while (cin.fail() || (m - floor(m)) || (m > max) || (m < min))
-	{
-		cout << s;
-		cin.clear();
-		cin.ignore(256, '\n');
-		cin >> m;
 
+template <typename T>
+T proverka(T min, T max, string text1, string text2)
+{
+	T value;
+	
+	cout << text1;
+	while ((cin >> value).fail() || value > max || value < min)
+	{
+		cin.clear();
+		cin.ignore(10000, '\n');
+		cout << text2 << "Choose between (" << min << " - " << max << ")" << endl;
 	}
-	return m;
+	return value;
 }
 
-float proverka2(float m, int max, int min, string s)
+
+void edit_Pipe(Pipe& pipe) 
 {
-	while ((m > max) || (m < min))
-	{
-		cout << s;
-		cin.clear();
-		cin.ignore(256, '\n');
-		cin >> m;
-	}
-	return m;
+	pipe.is_broken = !pipe.is_broken;
+	cout << "Pipe status was changed to: " << pipe.is_broken << endl;
 }
 
-/*int proves(float k, int k1, int k2, string s) {
-	while (cin.fail() || (k - floor(k)) || (k > k1) || (k < k2))
-	{
-		cout << s;
-		cin.clear();
-		cin.ignore(256, '\n');
-		cin >> k;
+void edit_CS(CS& cs) 
+{
+	int k = proverka(0, cs.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+	cs.amount_running_workshops = k;
+	cout << "The number of running workshops at the compressor station " << cs.id
+		<< "\nwas changed to " << cs.amount_running_workshops << endl;
+}
+
+
+ostream& operator << (ostream& out, const CS& c) {
+	if (c.id == -1) {
+		out << "\t COMPRESSOR info: " << endl;
+		out << "Name: " << c.Name << endl;
+		out << "id: " << c.id << endl;
+		out << "Number of workshops: " << c.amount_workshops << endl;
+		out << "Number of working workshops: " << c.amount_running_workshops << endl;
+		out << "Efficienty: " << c.efficiency << endl;
 	}
-	return k;
-};*/
-Pipe CreatePipe()
+	else {
+		out << "Compressor doesnt exist" << endl;
+	}
+	return out;
+}
+
+ostream& operator << (ostream& out, const Pipe& p) {
+	if (p.id == -1) {
+		out << "\t PIPE info: " << endl;
+		out << "Diameter: " << p.diametr << endl;
+		out << "Length: " << p.length << endl;
+		out << "id: " << p.id << endl;
+		out << (p.is_broken ? "Under repair" : "Not in repair") << endl;
+	}
+	else {
+		cout << "Pipe doesnt exist" << endl;
+	}
+	return out;
+}
+istream& operator >> (istream& in, CS& c) {
+	cout << "Type name:" << endl;
+	cin.ignore(256, '\n');
+	getline(in, c.Name, '\n');
+	c.amount_workshops = proverka(0, 100000, "Type the amount of workshops\n", "The amount of workshops must be positive integer between 0 and 100000\n");
+	c.amount_running_workshops = proverka(0, c.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+	c.efficiency = proverka(0,100, "Type the efficiency\n", "Incorrect efficiency(between 0 and 100)\n");
+	c.id = 1;
+	return in;
+}
+
+istream& operator >> (istream& in, Pipe& p) {
+	p.length = proverka(0, 100000, "Type pipe length\n", "The length must be a positive integer between 0 and 100000\n");
+	p.diametr = proverka(0, 100000, "Type pipe diametr\n", "The diametr must be a positive integer between 0 and 100000\n");
+	p.is_broken = false;
+	p.id = 1;
+	return in;
+}
+
+
+void save_to_filePipe(const Pipe& p, ofstream& fout)
+{
+	fout << p.id << endl << p.length << endl << p.diametr << endl << p.is_broken << endl;
+
+}
+
+
+void save_to_fileCS(const CS& cs, ofstream& fout)
+{
+	fout << cs.id << endl << cs.Name << endl << cs.amount_workshops << endl << cs.amount_running_workshops << endl << cs.efficiency << endl;
+}
+
+void save_to_file(const vector<Pipe>& p, const vector<CS>& c) {
+	ofstream fout;
+	fout.open("Data.txt", ios::out);
+	if (fout.is_open()) {
+		fout << p.size() << endl << c.size() << endl; 
+		for (Pipe it : p)
+		{
+			save_to_filePipe(it, fout);
+		}
+		for (CS it : c)
+		{
+			save_to_fileCS(it, fout);
+		}
+		fout.close();
+	}
+}
+
+
+Pipe loadingPipe(ifstream& fin)
 {
 	Pipe p;
-	float length1;
-	float diametr1;
-	p.id = {};
-	cout << "Type pipe length" << endl;
-	cin >> length1;
-	p.length = proverka1(length1, 100000, 0, "The length must be a positive integer between 0 and 100000\n");
-	cout << "Type pipe diametr" << endl;
-	cin >> diametr1;
-	p.diametr = proverka1(diametr1, 100000, 0, "The diametr must be a positive integer between 0 and 100000\n");
-	cout << "The pipe is broken or not (0-if it is broken, 1-if it is in a working order)" << endl;
-	float k;
-	cin >> k;
-	k = proverka1(k, 1, 0, "Type 0 or 1!\n");
-	if (k == 0)
-	{
-		p.is_broken = "Yes";
-	}
-	else if (k == 1)
-	{
-		p.is_broken = "No";
-	}
+	fin >> p.id;
+	fin >> p.length >> p.diametr >> p.is_broken;
 	return p;
 }
-CS CreateCS()
+CS loadingCS(ifstream& fin)
 {
 	CS cs;
-	float amount_workshops1;
-	float amount_running_workshops1;
-	float effect1;
-	cs.id = {};
-	cout << "Type name " << endl;
-	cin >> cs.Name;
-	cout << "Type the amount of workshops " << endl;
-	cin >> amount_workshops1;
-	cs.amount_workshops = proverka1(amount_workshops1, 100000, 0, "The amount of workshops must be positive integer between 0 and 100000\n");
-	cout << "Type the amount of running workshops " << endl;
-	cin >> amount_running_workshops1;
-	cs.amount_running_workshops = proverka1(amount_running_workshops1, amount_workshops1, 0, "Incorrect number of running workshops\n");
-	cout << "Type the efficiency " << endl;
-	cin >> effect1;
-	cs.effect = proverka2(effect1, 100, 0, "Incorrect efficiency(between 0 and 100)\n");
+	fin >> cs.id;
+	fin.ignore(256, '\n');
+	getline(fin, cs.Name);
+	fin >> cs.amount_workshops >> cs.amount_running_workshops >> cs.efficiency;
 	return cs;
 }
-void printInformPipe(Pipe p1)
-{
-	cout << "ID: " << p1.id << "\n";
-	cout << "The length: " << p1.length << "\n";
-	cout << "The diametr: " << p1.diametr << "\n";
-	cout << "Is broken: " << p1.is_broken << "\n";
+
+void load_from_file(vector <Pipe>& p, vector <CS>& c) {
+	ifstream fin;
+	int countP, countC;
+	fin.open("Data.txt", ios::in);
+	if (fin.is_open()) 
+	{
+		fin >> countP >> countC;
+		for (int i = 0; i < countP; i++)
+		{
+			p.push_back(loadingPipe(fin));
+		}
+		for (int i = 0; i < countC; i++)
+		{
+			c.push_back(loadingCS(fin));
+		}
+		fin.close();
+	}
 }
-void printInformCS(CS cs1)
-{
-	cout << "ID: " << cs1.id << "\n";
-	cout << "Name: " << cs1.Name << "\n";
-	cout << "Amount of workshops: " << cs1.amount_workshops << "\n";
-	cout << "Amount of working workshops: " << cs1.amount_running_workshops << "\n";
-	cout << "Efficiency: " << round(cs1.effect * 100) / 100 << " %" << "\n";
+
+template <typename T>
+T& SelecetObject(vector<T>& vec) {
+	unsigned int index=proverka(1u, vec.size(), "Type index of:\n", "Incorrect selection. Select an existing object\n");
+	return vec[index - 1];
 }
+
 void print_menu() {
 	system("cls"); 
 	cout << "Menu\n";
@@ -127,157 +183,96 @@ void print_menu() {
 	cout << "7. Load\n";
 	cout << "0. Exit\n";
 }
-Pipe loadingPipe(ifstream& myfile)
-{
-	Pipe p;
-	p.id = {};
-	myfile >> p.length >> p.diametr >> p.is_broken;
-	return p;
-}
-CS loadingCS(ifstream& myfile)
-{
-	CS cs;
-	cs.id = {};
-	myfile >> cs.Name >> cs.amount_workshops >> cs.amount_running_workshops >> cs.effect;
-	return cs;
-}
-void saveinformPipetxt(Pipe p1, ofstream& fout)
-{
-	fout << p1.length << " " << p1.diametr << " " << p1.is_broken << " ";
-}
-void saveinformCStxt(CS cs1, ofstream& fout)
-{
-	fout << cs1.Name << " " << cs1.amount_workshops << " " << cs1.amount_running_workshops << " " << cs1.effect << " ";
-}
 
 
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
-	int choice;
-	float vv;
-	CS cs2;
-	int i = 0, j = 0;
-	Pipe p2;
-	do {
+	vector<Pipe> pipes;
+	vector<CS> CSs;
+
+	int i;
+	while (1)
+	{
+		cout << "Select action:" << endl;
 		print_menu();
-		cin >> vv;
-		choice = proverka1(vv, 7, 0, "Wrong action, please type (0-7)\n");
-		switch (choice) {
+		i = proverka(0, 7, "Choose the action\n", "Wrong action, please type (0-7)\n");
+		switch (i)
+		{
 		case 1:
 		{
-			p2 = CreatePipe();
-			p2.id = i + 1;
-			printInformPipe(p2);
-			i++;
+			Pipe pipe;
+			cin >> pipe;
+			pipes.push_back(pipe);
+
 			break;
 		}
 		case 2:
 		{
-			cs2 = CreateCS();
-			cs2.id = j + 1;
-			printInformCS(cs2);
-			j++;
+			CS cs;
+			cin >> cs;
+			CSs.push_back(cs);
 			break;
 		}
 		case 3:
 		{
-			if (i == 0) { cout << "You haven't added any pipes yet\n"; }
+			if (pipes.size() == 0) { cout << "You haven't added any pipes yet\n"; }
 			else {
-				cout << "Pipes\n";
-				printInformPipe(p2);
-				cout << "\n";
+				cout << SelecetObject(pipes);
+
 			}
-			if (j == 0) { cout << "You haven't added any compressor stations yet\n"; }
+			if (CSs.size() == 0) { cout << "You haven't added any compressor stations yet\n"; }
 			else {
-				cout << "Compressor Stations\n";
-				printInformCS(cs2);
-				cout << "\n";
+
+				cout << SelecetObject(CSs);
+
 			}
 			break;
 		}
 		case 4:
 		{
-			if (i == 0) { cout << "You haven't added any pipes yet\n"; }
+			if (pipes.size() != 0) {
+				edit_Pipe(SelecetObject(pipes));
+			}
 			else {
-				if (p2.is_broken == "Yes") { p2.is_broken = "No"; }
-				else { p2.is_broken = "Yes"; }
-				cout << "The status of the pipe changed\n";
+				cout << "You haven't added any pipes yet" << endl;
 			}
 			break;
 		}
 		case 5:
 		{
-			int vyb;
-			if (j == 0) { cout << "You haven't added any compressor stations yet\n"; }
-			else {
-				cout << "1. Run workstation\n2. Stop workstation\n";
-				cin >> vyb;
-				vyb = proverka1(vyb, 2, 1, "1 or 2!");
-				if (vyb == 1) {
-					if (cs2.amount_running_workshops = cs2.amount_workshops) { cout << "All workshops are in working order"; }
-					else {
-						cs2.amount_running_workshops = cs2.amount_running_workshops + 1;
-					}
-				}
-				else {
-					if (cs2.amount_running_workshops == 0) { cout << "There are no running workshops"; }
-					else {
-						cs2.amount_running_workshops = cs2.amount_running_workshops - 1;
-					}
-				}
+			if (CSs.size() != 0) 
+			{
+				edit_CS(SelecetObject(CSs));
 			}
+			else 
+			{
+				cout << "You haven't added any compressor stations yet" << endl;
+			}
+			break;
 		}
 		case 6:
 		{
-			ofstream fout;
-			fout.open("information.txt");
-			if (i == 0) { fout << "You haven't added any pipes yet\n"; }
-			else {
-				saveinformPipetxt(p2, fout);
-			}
-			if (j == 0) {
-				fout << "\nYou haven't added any compressor stations yet\n";
-			}
-			else {
-				fout << "\n";
-				saveinformCStxt(cs2, fout);
-			}
-			fout.close();
+			save_to_file(pipes, CSs);
 			break;
 		}
 		case 7:
 		{
-			i = 0; j = 0;
-			string filename;
-			cout << "Type file name: ";
-			cin >> filename;
-			ifstream myfile(filename);
-			if (myfile.is_open())
-			{
-				p2 = loadingPipe(myfile);
-				p2.id = i + 1;
-				printInformPipe(p2);
-				cout << "\n";
-				i++;
-				myfile.ignore(256, '\n');
-				cs2 = loadingCS(myfile);
-				cs2.id = j + 1;
-				printInformCS(cs2);
-				cout << "\n";
-				j++;
-			}
-			myfile.close();
+			load_from_file(pipes, CSs);
 			break;
 		}
 		case 0:
 		{
 			cout << "Bye!!!";
+			return(0);
+			break;
 		}
-		return 0;
 		}
-	if (choice != 0)
+		if (i != 0)
 			system("pause");
-	} while (choice != 0);
-	return 0;
+
+	}
+
+	return(0);
+
 }
