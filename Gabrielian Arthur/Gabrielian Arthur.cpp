@@ -2,164 +2,175 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Pipe.h"
+#include "Compressor.h"
+
 using namespace std;
 
-struct CS
-{
-	int id;
-	string Name;
-	int amount_workshops;
-	int amount_running_workshops;
-	float efficiency;
-};
-struct Pipe
-{
-	int id;
-	int diametr;
-	int length;
-	bool is_broken;
-};
-
-template <typename T>
-T proverka(T min, T max, string text1, string text2)
-{
-	T value;
-	
-	cout << text1;
-	while ((cin >> value).fail() || value > max || value < min)
-	{
-		cin.clear();
-		cin.ignore(10000, '\n');
-		cout << text2 << "Choose between (" << min << " - " << max << ")" << endl;
-	}
-	return value;
-}
 
 
-void edit_Pipe(Pipe& pipe) 
-{
-	pipe.is_broken = !pipe.is_broken;
-	cout << "Pipe status was changed to: " << pipe.is_broken << endl;
-}
-
-void edit_CS(CS& cs) 
-{
-	int k = proverka(0, cs.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-	cs.amount_running_workshops = k;
-	cout << "The number of running workshops at the compressor station " << cs.id
-		<< "\nwas changed to " << cs.amount_running_workshops << endl;
-}
-
-
-ostream& operator << (ostream& out, const CS& c) {
-	if (c.id == -1) {
-		out << "\t COMPRESSOR info: " << endl;
-		out << "Name: " << c.Name << endl;
-		out << "id: " << c.id << endl;
-		out << "Number of workshops: " << c.amount_workshops << endl;
-		out << "Number of working workshops: " << c.amount_running_workshops << endl;
-		out << "Efficienty: " << c.efficiency << endl;
-	}
-	else {
-		out << "Compressor doesnt exist" << endl;
-	}
-	return out;
-}
-
-ostream& operator << (ostream& out, const Pipe& p) {
-	if (p.id == -1) {
-		out << "\t PIPE info: " << endl;
-		out << "Diameter: " << p.diametr << endl;
-		out << "Length: " << p.length << endl;
-		out << "id: " << p.id << endl;
-		out << (p.is_broken ? "Under repair" : "Not in repair") << endl;
-	}
-	else {
-		cout << "Pipe doesnt exist" << endl;
-	}
-	return out;
-}
-istream& operator >> (istream& in, CS& c) {
-	cout << "Type name:" << endl;
-	cin.ignore(256, '\n');
-	getline(in, c.Name, '\n');
-	c.amount_workshops = proverka(0, 100000, "Type the amount of workshops\n", "The amount of workshops must be positive integer between 0 and 100000\n");
-	c.amount_running_workshops = proverka(0, c.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-	c.efficiency = proverka(0,100, "Type the efficiency\n", "Incorrect efficiency(between 0 and 100)\n");
-	c.id = 1;
-	return in;
-}
-
-istream& operator >> (istream& in, Pipe& p) {
-	p.length = proverka(0, 100000, "Type pipe length\n", "The length must be a positive integer between 0 and 100000\n");
-	p.diametr = proverka(0, 100000, "Type pipe diametr\n", "The diametr must be a positive integer between 0 and 100000\n");
-	p.is_broken = false;
-	p.id = 1;
-	return in;
-}
+//template <typename T>
+//T proverka(T min, T max, string text1, string text2)
+//{
+//	T value;
+//	
+//	cout << text1;
+//	while ((cin >> value).fail() || value > max || value < min)
+//	{
+//		cin.clear();
+//		cin.ignore(10000, '\n');
+//		cout << text2 << "Choose between (" << min << " - " << max << ")" << endl;
+//	}
+//	return value;
+//}
 
 
-void save_to_filePipe(const Pipe& p, ofstream& fout)
-{
-	fout << p.id << endl << p.length << endl << p.diametr << endl << p.is_broken << endl;
+//void edit_Pipe(Pipe& pipe) 
+//{
+//	pipe.is_broken = !pipe.is_broken;
+//	cout << "Pipe status was changed to: " << pipe.is_broken << endl;
+//}
 
-}
+//void edit_CS(CS& cs) 
+//{
+//	int k = proverka(0, cs.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+//	cs.amount_running_workshops = k;
+//	cout << "The number of running workshops at the compressor station " << cs.id
+//		<< "\nwas changed to " << cs.amount_running_workshops << endl;
+//}
 
 
-void save_to_fileCS(const CS& cs, ofstream& fout)
-{
-	fout << cs.id << endl << cs.Name << endl << cs.amount_workshops << endl << cs.amount_running_workshops << endl << cs.efficiency << endl;
-}
+//ostream& operator << (ostream& out, const CS& c) {
+//	if (c.id == -1) {
+//		out << "\t COMPRESSOR info: " << endl;
+//		out << "Name: " << c.Name << endl;
+//		out << "id: " << c.id << endl;
+//		out << "Number of workshops: " << c.amount_workshops << endl;
+//		out << "Number of working workshops: " << c.amount_running_workshops << endl;
+//		out << "Efficienty: " << c.efficiency << endl;
+//	}
+//	else {
+//		out << "Compressor doesnt exist" << endl;
+//	}
+//	return out;
+//}
+
+//ostream& operator << (ostream& out, const Pipe& p) {
+//	if (p.id == -1) {
+//		out << "\t PIPE info: " << endl;
+//		out << "Diameter: " << p.diametr << endl;
+//		out << "Length: " << p.length << endl;
+//		out << "id: " << p.id << endl;
+//		out << (p.is_broken ? "Under repair" : "Not in repair") << endl;
+//	}
+//	else {
+//		cout << "Pipe doesnt exist" << endl;
+//	}
+//	return out;
+//}
+//istream& operator >> (istream& in, CS& c) {
+//	cout << "Type name:" << endl;
+//	cin.ignore(256, '\n');
+//	getline(in, c.Name, '\n');
+//	c.amount_workshops = proverka(0, 100000, "Type the amount of workshops\n", "The amount of workshops must be positive integer between 0 and 100000\n");
+//	c.amount_running_workshops = proverka(0, c.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+//	c.efficiency = proverka(0,100, "Type the efficiency\n", "Incorrect efficiency(between 0 and 100)\n");
+//	c.id = 1;
+//	return in;
+//}
+
+//istream& operator >> (istream& in, Pipe& p) {
+//	p.length = proverka(0, 100000, "Type pipe length\n", "The length must be a positive integer between 0 and 100000\n");
+//	p.diametr = proverka(0, 100000, "Type pipe diametr\n", "The diametr must be a positive integer between 0 and 100000\n");
+//	p.is_broken = false;
+//	p.id = 1;
+//	return in;
+//}
+
+
+//void save_to_filePipe(const Pipe& p, ofstream& fout)
+//{
+//	fout << p.Getid() << endl << p.GetLength() << endl << p.GetDiametr() << endl << p.GetStatus() << endl;
+//
+//}
+
+
+//void save_to_fileCS(const CS& cs, ofstream& fout)
+//{
+//	fout << cs.Getid() << endl << cs.GetName() << endl << cs.GetWorkshops() << endl << cs.GetWorking() << endl << cs.GetEfficiency() << endl;
+//}
 
 void save_to_file(const vector<Pipe>& p, const vector<CS>& c) {
 	ofstream fout;
 	fout.open("Data.txt", ios::out);
+	string filename;
+	cout << "Type filename:" << std::endl;
+	cin.ignore(256, '\n');
+	getline(cin, filename, '\n');
+	fout.open(filename, ios::out);
 	if (fout.is_open()) {
 		fout << p.size() << endl << c.size() << endl; 
-		for (Pipe it : p)
+		/*for (Pipe it : p)*/
+		for (const Pipe& it : p)
 		{
-			save_to_filePipe(it, fout);
+			//save_to_filePipe(it, fout);
+			fout << it;
 		}
-		for (CS it : c)
+		for (const CS& it : c)
+		//for (CS it : c)
 		{
-			save_to_fileCS(it, fout);
+			//save_to_fileCS(it, fout);
+			fout << it;
 		}
 		fout.close();
 	}
 }
 
 
-Pipe loadingPipe(ifstream& fin)
-{
-	Pipe p;
-	fin >> p.id;
-	fin >> p.length >> p.diametr >> p.is_broken;
-	return p;
-}
-CS loadingCS(ifstream& fin)
-{
-	CS cs;
-	fin >> cs.id;
-	fin.ignore(256, '\n');
-	getline(fin, cs.Name);
-	fin >> cs.amount_workshops >> cs.amount_running_workshops >> cs.efficiency;
-	return cs;
-}
+//Pipe loadingPipe(ifstream& fin)
+//{
+//	Pipe p;
+//	fin >> p.id;
+//	fin >> p.length >> p.diametr >> p.is_broken;
+//	return p;
+//}
+//CS loadingCS(ifstream& fin)
+//{
+//	CS cs;
+//	fin >> cs.id;
+//	fin.ignore(256, '\n');
+//	getline(fin, cs.Name);
+//	fin >> cs.amount_workshops >> cs.amount_running_workshops >> cs.efficiency;
+//	return cs;
+//}
 
 void load_from_file(vector <Pipe>& p, vector <CS>& c) {
 	ifstream fin;
 	int countP, countC;
-	fin.open("Data.txt", ios::in);
+	string filename;
+	cout << "Type filename:" << std::endl;
+	cin.ignore(256, '\n');
+	getline(cin, filename, '\n');
+	fin.open(filename, ios::in);
+	//fin.open("Data.txt", ios::in);
 	if (fin.is_open()) 
 	{
 		fin >> countP >> countC;
+		p.reserve(countP);
+		c.reserve(countC);
 		for (int i = 0; i < countP; i++)
 		{
-			p.push_back(loadingPipe(fin));
+			Pipe LoadedPipe;
+			fin >> LoadedPipe;
+			p.push_back(LoadedPipe);
+			//p.push_back(loadingPipe(fin));
 		}
 		for (int i = 0; i < countC; i++)
 		{
-			c.push_back(loadingCS(fin));
+			CS LoadedCS;
+			fin >> LoadedCS;
+			c.push_back(LoadedCS);
+			//c.push_back(loadingCS(fin));
 		}
 		fin.close();
 	}
@@ -181,13 +192,63 @@ void print_menu() {
 	cout << "5. Edit a CS\n";
 	cout << "6. Save\n";
 	cout << "7. Load\n";
+	cout << "8. Find pipes by Name" << endl;
+	cout << "9. Find pipes by Status" << endl;
+	cout << "10. Find compressors by Name" << endl;
+	cout << "11. Find compressors by percent" << endl;
 	cout << "0. Exit\n";
 }
 
+template<typename T>
+using FilterP = bool(*)(const Pipe& p, T param);
+
+bool CheckByName(const Pipe& p, string param) {
+	return p.GetName() == param;
+}
+bool CheckByStatus(const Pipe& p, bool param) {
+	return p.GetStatus() == param;
+}
+
+template <typename T>
+vector<int> FindPipeByFilter(const vector<Pipe>& vec, FilterP<T> f, T param) {
+	vector<int> res;
+	int i = 0;
+	for (auto it : vec) {
+		if (f(it, param)) {
+			res.push_back(i);
+		}
+		i++;
+	}
+	return res;
+}
+
+template<typename T>
+using FilterC = bool(*)(const Compressor& c, T param);
+
+bool CheckByName(const Compressor& c, string param) {
+	return c.GetName() == param;
+}
+bool CheckByPercent(const Compressor& c, double param) {
+	return (100.0 * (c.GetWorkshops() - c.GetInWork()) / c.GetWorkshops() >= param);
+}
+
+template <typename T>
+vector<int> FindCompressorByFilter(const vector<Compressor>& vec, FilterC<T> f, T param) {
+	vector<int> res;
+	int i = 0;
+	for (auto it : vec) {
+		if (f(it, param)) {
+			res.push_back(i);
+		}
+		i++;
+	}
+	return res;
+}
 
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
+
 	vector<Pipe> pipes;
 	vector<CS> CSs;
 
@@ -231,8 +292,9 @@ int main()
 		}
 		case 4:
 		{
+			Pipe p = SelecetObject(pipes);
 			if (pipes.size() != 0) {
-				edit_Pipe(SelecetObject(pipes));
+				p.edit_Pipe();
 			}
 			else {
 				cout << "You haven't added any pipes yet" << endl;
@@ -241,9 +303,10 @@ int main()
 		}
 		case 5:
 		{
+			CS cs = SelecetObject(CSs);
 			if (CSs.size() != 0) 
 			{
-				edit_CS(SelecetObject(CSs));
+				cs.edit_CS();
 			}
 			else 
 			{
