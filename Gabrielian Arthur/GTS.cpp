@@ -1,6 +1,7 @@
 #pragma once
 #include "GTS.h"
 #include "utils.h"
+#include <queue>
 
 void GTS::UpdateIndex()
 {
@@ -36,7 +37,6 @@ void GTS::AddCS(const unordered_map<int, CS>&map, int id)
 	cout << "CS added ID: " << IdIndexCS.find(id)->first << " Index: " << IdIndexCS.find(id)->second << endl;
 	is_changed = true;
 }
-
 
 
 
