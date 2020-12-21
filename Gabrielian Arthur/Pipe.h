@@ -40,6 +40,8 @@ public:
 	int GetStart() const;
 	int GetEnd() const;
 
+	//void ChangeUsed();
+
 	void edit_Pipe();
 
 	friend std::ostream& operator << (std::ostream& out, const Pipe& p);

@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="Gabrielian Arthur.cpp" />
+    <ClCompile Include="GTS.cpp" />
     <ClCompile Include="Pipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Compressor.h" />
+    <ClInclude Include="GTS.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

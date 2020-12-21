@@ -77,6 +77,9 @@ void print_menu() {
 	cout << "12. Batch editing of pipes" << endl;
 	cout << "13. Delete Pipe" << endl;
 	cout << "14. Delete СS" << endl;
+	cout << "15. Add CS to GTS" << endl;
+	cout << "16. Add Pipe to GTS" << endl;
+	cout << "17. Connect CSs" << endl;
 	cout << "0. Exit\n";
 }
 
@@ -233,7 +236,7 @@ int main()
 			cout << "Pipe id: " << endl;
 			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::Maxid));
 			if (iter == pipes.end())
-				cout << "Truba is not found" << endl;
+				cout << "Pipe  doesn't exist" << endl;
 			else
 				iter->second.edit_Pipe();
 			break;
@@ -297,7 +300,7 @@ int main()
 			break;
 		}
 		case 11: {
-			cout << "Vvedite percent ne rabot cehov:  " << endl;
+			cout << "Type percent of not working compressor stations:  " << endl;
 			for (int i : FindCompressorByFilter(CSs, CheckByPercent, proverka(0.0, 100.0))) {
 				cout << CSs[i] << endl;
 			}
@@ -311,7 +314,7 @@ int main()
 			while (1) {
 				cout << "Id to delete" << endl;
 				if (del(pipes, proverka(0, Pipe::Maxid)))
-					cout << "Truba ydalena" << endl;
+					cout << "Pipe is deleted" << endl;
 				else
 					cout << "Truba is not found" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;

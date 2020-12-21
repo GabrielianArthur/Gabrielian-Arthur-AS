@@ -55,6 +55,11 @@ void Pipe::edit_Pipe()
    is_broken = !is_broken;
 }
 
+void Pipe::ChangeUsed()
+{
+	used = !used;
+}
+
 std::ostream& operator << (std::ostream& out, const Pipe& p) 
 {
 	if (p.id >= 0) {
@@ -103,6 +108,7 @@ Pipe::Pipe()
 {
 	id = Maxid++;
 	Name = "Unknown";
+	used = false;
 	length = 0;
 	diametr = 0;
 	is_broken = false;
