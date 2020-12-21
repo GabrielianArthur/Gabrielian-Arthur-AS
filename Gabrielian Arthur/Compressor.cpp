@@ -35,10 +35,14 @@ double CS::GetEfficiency() const
 	return efficiency;
 }
 
-
+double CS::GetPercentWorkingWorkshops() const
+{
+	return  100.0 * (amount_workshops - amount_running_workshops) / amount_workshops;
+}
 void CS::edit_CS()
 {
-	int k = proverka(0, amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+	std::cout << "Type amount workshops" << std::endl;
+	int k = proverka(0, amount_workshops);
 	amount_running_workshops = k;
 	std::cout << "The number of running workshops at the compressor station " << id
 		<< "\nwas changed to " << amount_running_workshops << std::endl;
@@ -50,9 +54,12 @@ std::istream& operator >> (std::istream& in, CS& c) {
 	std::cout << "Type name:" << std::endl;
 	std::cin.ignore(256, '\n');
 	getline(in, c.Name, '\n');
-	c.amount_workshops = proverka(0, 100000, "Type the amount of workshops\n", "The amount of workshops must be positive integer between 0 and 100000\n");
-	c.amount_running_workshops = proverka(0, c.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-	c.efficiency = proverka(0, 100, "Type the efficiency\n", "Incorrect efficiency(between 0 and 100)\n");
+	std::cout << "Type the amount of workshops" << std::endl;
+	c.amount_workshops = proverka(0, 100000);
+	std::cout << "Type the amount of running workshops" << std::endl;
+	c.amount_running_workshops = proverka(0, c.amount_workshops);
+	std::cout << "Type the the efficiency" << std::endl;
+	c.efficiency = proverka(0, 100);
 	return in;
 }
 

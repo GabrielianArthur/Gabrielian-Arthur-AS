@@ -12,7 +12,12 @@ class Pipe
 	std::string Name;
 	int diametr;
 	int length;
+	double Weight;
 	bool is_broken;
+
+	int start;
+	int end;
+	bool used;
 
 public:
     static int Maxid;
@@ -23,9 +28,17 @@ public:
 
 	int GetDiametr() const;
 
+	double GetWeight() const;
+
 	int GetLength() const;
 
 	bool GetStatus() const;
+
+	void SetStart(int);
+	void SetEnd(int);
+
+	int GetStart() const;
+	int GetEnd() const;
 
 	void edit_Pipe();
 

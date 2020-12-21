@@ -13,6 +13,8 @@ class CS
 	float efficiency;
 
 public:
+	double GetPercentWorkingWorkshops() const;
+
 	static int Maxid;
 
 	int Getid() const;

@@ -31,10 +31,28 @@ bool Pipe::GetStatus() const
 	return is_broken;
 }
 
+void Pipe::SetStart(int new_start)
+{
+	start = new_start;
+}
+
+void Pipe::SetEnd(int new_end)
+{
+	end = new_end;
+}
+
+int Pipe::GetStart() const
+{
+	return start;
+}
+
+int Pipe::GetEnd() const
+{
+	return end;
+}
 void Pipe::edit_Pipe()
 {
    is_broken = !is_broken;
-   std::cout << "Pipe status was changed to: " << is_broken << std::endl;
 }
 
 std::ostream& operator << (std::ostream& out, const Pipe& p) 
@@ -57,8 +75,10 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 	std::cout << "Type name:" << std::endl;
 	std::cin.ignore(256, '\n');
 	getline(in, p.Name, '\n');
-	p.length = proverka(0, 100000, "Type pipe length\n", "The length must be a positive integer between 0 and 100000\n");
-	p.diametr = proverka(0, 100000, "Type pipe diametr\n", "The diametr must be a positive integer between 0 and 100000\n");
+	std::cout << "Type pipe length" << std::endl;
+	p.length = proverka(0, 100000);
+	std::cout << "Type pipe diametr" << std::endl;
+	p.diametr = proverka(0, 100000);
 	p.is_broken = false;
 	return in;
 }
@@ -86,4 +106,6 @@ Pipe::Pipe()
 	length = 0;
 	diametr = 0;
 	is_broken = false;
+	start = -1;
+	end = -1;
 }
