@@ -85,10 +85,9 @@ std::ostream& operator << (std::ostream& out, const CS& c) {
 
 std::ofstream& operator<<(std::ofstream& out, const CS& c)
 {
-	out << c.Name() << std::endl << c.amount_workshops() << std::endl << c.amount_running_workshops() << std::endl << c.efficiency() << std::endl;
+	out << c.Name << std::endl << c.amount_workshops << std::endl << c.amount_running_workshops << std::endl << c.efficiency << std::endl;
 	return out;
 }
-
 std::ifstream& operator>>(std::ifstream& in, CS& c)
 {
 	in.ignore(256, '\n');

@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include "utils.h"
+
 
 
 using namespace std;
@@ -21,7 +23,7 @@ class GTS
 	bool is_changed;
 
 public:
-	void UpdateIndexCS();
+	void UpdateIndex();
 
 	int GetCsIndex(int) const;
 

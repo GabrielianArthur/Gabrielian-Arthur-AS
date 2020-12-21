@@ -7,6 +7,8 @@
 #include "Pipe.h"
 #include "Compressor.h"
 #include "GTS.h"
+#include "utils.h"
+
 
 using namespace std;
 
@@ -77,10 +79,11 @@ void print_menu() {
 	cout << "11. Find compressors by percent" << endl;
 	cout << "12. Batch editing of pipes" << endl;
 	cout << "13. Delete Pipe" << endl;
-	cout << "14. Delete СS" << endl;
+	cout << "14. Delete CS" << endl;
 	cout << "15. Add CS to GTS" << endl;
 	cout << "16. Add Pipe to GTS" << endl;
 	cout << "17. Connect CSs" << endl;
+	cout << "18. Topologycal sort" << endl;
 	cout << "0. Exit\n";
 }
 
@@ -128,7 +131,7 @@ vector<int> FindCompressorByFilter(const unordered_map<int, CS>& map, FilterC<T>
 
 
 void PacketRedactTrub(unordered_map<int, Pipe>& map) {
-	cout << "\tViberete redaktiruemie trubi: " << endl;
+	cout << "\tSelect thу pipe in order to edit: " << endl;
 	cout << "\t1. Po statusu v remonte" << endl;
 	cout << "\t2. Po statusu ne v remonte" << endl;
 	cout << "\t3. Po viboru polzovatelya" << endl;
@@ -151,7 +154,7 @@ void PacketRedactTrub(unordered_map<int, Pipe>& map) {
 		vector<int> vec;
 		while (1) {
 			cout << "Type ID" << endl;
-			vec.push_back(proverka(0, Pipe::Maxid));
+			vec.push_back(proverka(0, Pipe::GetMaxid()));
 			cout << "Add another one?" << endl << "\t 0. No" << endl << "\t 1. Yes" << endl;
 			if (proverka(0, 1) == 0)
 				break;
@@ -235,7 +238,7 @@ int main()
 			//}
 
 			cout << "Pipe id: " << endl;
-			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::Maxid));
+			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::GetMaxid()));
 			if (iter == pipes.end())
 				cout << "Pipe  doesn't exist" << endl;
 			else
@@ -254,7 +257,7 @@ int main()
 			//	cout << "You haven't added any compressor stations yet" << endl;
 			//}
 			cout << "Compressor id: " << endl;
-			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid));
+			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid()));
 			if (iter == CSs.end()) {
 				cout << "Compressor doesnt exist" << endl;
 			}
@@ -313,11 +316,11 @@ int main()
 		}
 		case 13: {
 			while (1) {
-				cout << "Id to delete" << endl;
-				if (del(pipes, proverka(0, Pipe::GetMaxid)))
+				cout << "Enter the id " << endl;
+				if (del(pipes, proverka(0, Pipe::GetMaxid())))
 					cout << "Pipe is deleted" << endl;
 				else
-					cout << "Truba is not found" << endl;
+					cout << "Pype doesn't exist" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;

@@ -101,7 +101,7 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 
 std::ofstream& operator << (std::ofstream& out, const Pipe& p)
 {
-	out << p.Name() << std::endl << p.diametr() << std::endl << p.length() << std::endl << p.is_broken() << std::endl;
+	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl;
 	return out;
 }
 

@@ -2,12 +2,16 @@
 #include "GTS.h"
 #include "utils.h"
 
-void GTS::UpdateIndexCS()
+void GTS::UpdateIndex()
 {
 	int i = 0;
 	for (auto iter = IdIndexCS.begin(); iter != IdIndexCS.end(); iter++) {
 		iter->second = i;
 		++i;
+	}
+	i = 0;
+	for (auto iter = IdIndexPipe.begin(); iter != IdIndexPipe.end(); iter++) {
+		iter->second = i;
 	}
 }
 
@@ -66,7 +70,7 @@ void GTS::CreateAdjacencyMatrix(unordered_map<int, CS>& mapCS, unordered_map<int
 {
 	int n = edges.size();
 	if (is_changed) {
-		UpdateIndexCS();
+		UpdateIndex();
 		AdjacencyMatrix.clear();
 		AdjacencyMatrix.resize(n);
 		for (int i = 0; i < n; i++) {
@@ -149,9 +153,10 @@ void GTS::TopSort()
 	else {
 		reverse(TopSortedVector.begin(), TopSortedVector.end());
 		cout << "Topological sort: " << endl;
-			for (int i = 0; i < TopSortedVector.size(); i++) {
-				cout << TopSortedVector[i] << " ";
-			}
-			cout << endl;
+		for (int i = 0; i < TopSortedVector.size(); i++) {
+			cout << TopSortedVector[i] << " ";
 		}
+		cout << endl;
+	}
+}
 
