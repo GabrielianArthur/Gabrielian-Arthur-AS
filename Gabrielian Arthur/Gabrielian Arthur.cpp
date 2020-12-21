@@ -1,106 +1,16 @@
-﻿#include <iostream>
+﻿#pragma once
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "Pipe.h"
 #include "Compressor.h"
 
 using namespace std;
 
 
-
-//template <typename T>
-//T proverka(T min, T max, string text1, string text2)
-//{
-//	T value;
-//	
-//	cout << text1;
-//	while ((cin >> value).fail() || value > max || value < min)
-//	{
-//		cin.clear();
-//		cin.ignore(10000, '\n');
-//		cout << text2 << "Choose between (" << min << " - " << max << ")" << endl;
-//	}
-//	return value;
-//}
-
-
-//void edit_Pipe(Pipe& pipe) 
-//{
-//	pipe.is_broken = !pipe.is_broken;
-//	cout << "Pipe status was changed to: " << pipe.is_broken << endl;
-//}
-
-//void edit_CS(CS& cs) 
-//{
-//	int k = proverka(0, cs.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-//	cs.amount_running_workshops = k;
-//	cout << "The number of running workshops at the compressor station " << cs.id
-//		<< "\nwas changed to " << cs.amount_running_workshops << endl;
-//}
-
-
-//ostream& operator << (ostream& out, const CS& c) {
-//	if (c.id == -1) {
-//		out << "\t COMPRESSOR info: " << endl;
-//		out << "Name: " << c.Name << endl;
-//		out << "id: " << c.id << endl;
-//		out << "Number of workshops: " << c.amount_workshops << endl;
-//		out << "Number of working workshops: " << c.amount_running_workshops << endl;
-//		out << "Efficienty: " << c.efficiency << endl;
-//	}
-//	else {
-//		out << "Compressor doesnt exist" << endl;
-//	}
-//	return out;
-//}
-
-//ostream& operator << (ostream& out, const Pipe& p) {
-//	if (p.id == -1) {
-//		out << "\t PIPE info: " << endl;
-//		out << "Diameter: " << p.diametr << endl;
-//		out << "Length: " << p.length << endl;
-//		out << "id: " << p.id << endl;
-//		out << (p.is_broken ? "Under repair" : "Not in repair") << endl;
-//	}
-//	else {
-//		cout << "Pipe doesnt exist" << endl;
-//	}
-//	return out;
-//}
-//istream& operator >> (istream& in, CS& c) {
-//	cout << "Type name:" << endl;
-//	cin.ignore(256, '\n');
-//	getline(in, c.Name, '\n');
-//	c.amount_workshops = proverka(0, 100000, "Type the amount of workshops\n", "The amount of workshops must be positive integer between 0 and 100000\n");
-//	c.amount_running_workshops = proverka(0, c.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-//	c.efficiency = proverka(0,100, "Type the efficiency\n", "Incorrect efficiency(between 0 and 100)\n");
-//	c.id = 1;
-//	return in;
-//}
-
-//istream& operator >> (istream& in, Pipe& p) {
-//	p.length = proverka(0, 100000, "Type pipe length\n", "The length must be a positive integer between 0 and 100000\n");
-//	p.diametr = proverka(0, 100000, "Type pipe diametr\n", "The diametr must be a positive integer between 0 and 100000\n");
-//	p.is_broken = false;
-//	p.id = 1;
-//	return in;
-//}
-
-
-//void save_to_filePipe(const Pipe& p, ofstream& fout)
-//{
-//	fout << p.Getid() << endl << p.GetLength() << endl << p.GetDiametr() << endl << p.GetStatus() << endl;
-//
-//}
-
-
-//void save_to_fileCS(const CS& cs, ofstream& fout)
-//{
-//	fout << cs.Getid() << endl << cs.GetName() << endl << cs.GetWorkshops() << endl << cs.GetWorking() << endl << cs.GetEfficiency() << endl;
-//}
-
-void save_to_file(const vector<Pipe>& p, const vector<CS>& c) {
+void save_to_file(const unordered_map<int, Pipe>& p, const unordered_map<int, CS>& c) {
 	ofstream fout;
 	fout.open("Data.txt", ios::out);
 	string filename;
@@ -110,41 +20,19 @@ void save_to_file(const vector<Pipe>& p, const vector<CS>& c) {
 	fout.open(filename, ios::out);
 	if (fout.is_open()) {
 		fout << p.size() << endl << c.size() << endl; 
-		/*for (Pipe it : p)*/
-		for (const Pipe& it : p)
+		for (const auto& it : p)
 		{
-			//save_to_filePipe(it, fout);
-			fout << it;
+			fout << it.second;
 		}
-		for (const CS& it : c)
-		//for (CS it : c)
+		for (const auto& it : c)
 		{
-			//save_to_fileCS(it, fout);
-			fout << it;
+			fout << it.second;
 		}
 		fout.close();
 	}
 }
 
-
-//Pipe loadingPipe(ifstream& fin)
-//{
-//	Pipe p;
-//	fin >> p.id;
-//	fin >> p.length >> p.diametr >> p.is_broken;
-//	return p;
-//}
-//CS loadingCS(ifstream& fin)
-//{
-//	CS cs;
-//	fin >> cs.id;
-//	fin.ignore(256, '\n');
-//	getline(fin, cs.Name);
-//	fin >> cs.amount_workshops >> cs.amount_running_workshops >> cs.efficiency;
-//	return cs;
-//}
-
-void load_from_file(vector <Pipe>& p, vector <CS>& c) {
+void load_from_file(unordered_map <int, Pipe>& p, unordered_map <int, CS>& c) {
 	ifstream fin;
 	int countP, countC;
 	string filename;
@@ -152,7 +40,6 @@ void load_from_file(vector <Pipe>& p, vector <CS>& c) {
 	cin.ignore(256, '\n');
 	getline(cin, filename, '\n');
 	fin.open(filename, ios::in);
-	//fin.open("Data.txt", ios::in);
 	if (fin.is_open()) 
 	{
 		fin >> countP >> countC;
@@ -162,15 +49,14 @@ void load_from_file(vector <Pipe>& p, vector <CS>& c) {
 		{
 			Pipe LoadedPipe;
 			fin >> LoadedPipe;
-			p.push_back(LoadedPipe);
-			//p.push_back(loadingPipe(fin));
+			p.insert({ LoadedPipe.Getid(),LoadedPipe });
+
 		}
 		for (int i = 0; i < countC; i++)
 		{
 			CS LoadedCS;
 			fin >> LoadedCS;
-			c.push_back(LoadedCS);
-			//c.push_back(loadingCS(fin));
+			c.insert({ LoadedCS.Getid(), LoadedCS });
 		}
 		fin.close();
 	}
@@ -196,6 +82,9 @@ void print_menu() {
 	cout << "9. Find pipes by Status" << endl;
 	cout << "10. Find compressors by Name" << endl;
 	cout << "11. Find compressors by percent" << endl;
+	cout << "12. Batch editing of pipes" << endl;
+	cout << "13. Delete Pipe" << endl;
+	cout << "14. Delete СS" << endl;
 	cout << "0. Exit\n";
 }
 
@@ -210,108 +99,208 @@ bool CheckByStatus(const Pipe& p, bool param) {
 }
 
 template <typename T>
-vector<int> FindPipeByFilter(const vector<Pipe>& vec, FilterP<T> f, T param) {
+vector<int> FindPipeByFilter(const unordered_map<int, Pipe>& map, FilterP<T> f, T param) {
 	vector<int> res;
 	int i = 0;
-	for (auto it : vec) {
-		if (f(it, param)) {
-			res.push_back(i);
-		}
-		i++;
+	//for (auto it : vec) {
+	//	if (f(it, param)) {
+	//		res.push_back(i);
+	//	}
+		for (const auto& it : map) {
+			if (f(it.second, param)) {
+				res.push_back(it.first);
+			}
+		//i++;
 	}
 	return res;
 }
 
 template<typename T>
-using FilterC = bool(*)(const Compressor& c, T param);
+using FilterC = bool(*)(const CS& c, T param);
 
-bool CheckByName(const Compressor& c, string param) {
+bool CheckByName(const CS& c, string param) {
 	return c.GetName() == param;
 }
-bool CheckByPercent(const Compressor& c, double param) {
-	return (100.0 * (c.GetWorkshops() - c.GetInWork()) / c.GetWorkshops() >= param);
+bool CheckByPercent(const CS& c, double param) {
+	return (100.0 * (c.GetWorkshops() - c.GetWorking()) / c.GetWorkshops() >= param);
 }
 
 template <typename T>
-vector<int> FindCompressorByFilter(const vector<Compressor>& vec, FilterC<T> f, T param) {
+vector<int> FindCompressorByFilter(const unordered_map<int, CS>& map, FilterC<T> f, T param) {
 	vector<int> res;
 	int i = 0;
-	for (auto it : vec) {
-		if (f(it, param)) {
-			res.push_back(i);
-		}
-		i++;
+	//for (auto it : vec) {
+	//	if (f(it, param)) {
+	//		res.push_back(i);
+	//	}
+		for (const auto& it : map) {
+			if (f(it.second, param)) {
+				res.push_back(it.first);
+			}
+		//i++;
 	}
 	return res;
+}
+
+template<typename T>
+bool del(unordered_map<int, T>& map, int id) {
+	return map.erase(id);
+}
+
+void PacketRedactTrub(unordered_map<int, Pipe>& map) {
+	//cout << "\tViberete redaktiruemie trubi: " << endl;
+	cout << "\t1. Po statusu v remonte" << endl;
+	cout << "\t2. Po statusu ne v remonte" << endl;
+	cout << "\t3. Po viboru polzovatelya" << endl;
+	cout << "\t0. Back" << endl;
+	switch (proverka(0, 3, "\tViberete redaktiruemie trubi: ", "Wrong action, please type (0-3)\n"))
+	{
+	case 1:
+	{
+		for (int i : FindPipeByFilter(map, CheckByStatus, true))
+			map.find(i)->second.edit_Pipe();
+		break;
+	}
+	case 2:
+	{
+		for (int i : FindPipeByFilter(map, CheckByStatus, false))
+			map.find(i)->second.edit_Pipe();
+		break;
+	}
+	case 3: {
+		vector<int> vec;
+		while (1) {
+			//cout << "Vvedite ID" << endl;
+			vec.push_back(proverka(0, Pipe::Maxid, "Vvedite ID", "Incorrect value"));
+			//cout << "dobavit eshe?" << endl << "\t 0. Net" << endl << "\t 1. Da" << endl;
+			if (proverka(0, 1, "Add another one? 0-No; 1-Yes" , "Incorect value") == 0)
+				break;
+		}
+		for (auto i : vec) {
+			if (map.find(i) != map.end())
+				map.find(i)->second.edit_Pipe();
+		}
+		break;
+	}
+	case 0: {
+		return;
+	}
+	}
+}
+
+template<typename T>
+bool del(unordered_map<int, T>& map, int id) {
+	return map.erase(id);
 }
 
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
 
-	vector<Pipe> pipes;
-	vector<CS> CSs;
+	unordered_map <int, Pipe> pipes;
+	unordered_map <int, CS> CSs;
 
 	int i;
 	while (1)
 	{
 		cout << "Select action:" << endl;
 		print_menu();
-		i = proverka(0, 7, "Choose the action\n", "Wrong action, please type (0-7)\n");
+		i = proverka(0, 14, "Choose the action\n", "Wrong action, please type (0-14)\n");
 		switch (i)
 		{
 		case 1:
 		{
-			Pipe pipe;
-			cin >> pipe;
-			pipes.push_back(pipe);
+			//Pipe pipe;
+			//cin >> pipe;
+			//pipes.push_back(pipe);
+			while (1) {
+				Pipe pipe;
+				cin >> pipe;
+				pipes.insert({ pipe.Getid(), pipe });
+				//cout << "dobavit eshe?" << endl << "\t 0. Net" << endl << "\t 1. Da" << endl;
+				if (proverka(0, 1, "Add another one? 0-No; 1-Yes", "Incorect value") == 0)
+					break;
+			}
 
 			break;
 		}
 		case 2:
 		{
-			CS cs;
-			cin >> cs;
-			CSs.push_back(cs);
+			//CS cs;
+			//cin >> cs;
+			//CSs.push_back(cs);
+			while (1) {
+				CS comp;
+				cin >> comp;
+				CSs.insert({ comp.Getid(), comp });
+				//cout << "dobavit eshe?" << endl << "\t 0. Net" << endl << "\t 1. Da" << endl;
+				if (proverka(0, 1, "Add another one? 0-No; 1-Yes", "Incorect value") == 0)
+					break;
+			}
 			break;
 		}
 		case 3:
 		{
-			if (pipes.size() == 0) { cout << "You haven't added any pipes yet\n"; }
-			else {
-				cout << SelecetObject(pipes);
+			//if (pipes.size() == 0) { cout << "You haven't added any pipes yet\n"; }
+			//else {
+			//	for (auto& it : pipes) {
+			//		cout << it;
+			//	}
 
+			//}
+			//if (CSs.size() == 0) { cout << "You haven't added any compressor stations yet\n"; }
+			//else {
+
+			//	for (auto& it : CSs) {
+			//		cout << it;
+			//	}
+			//}
+			for (const auto& it : pipes) {
+				cout << it.second;
 			}
-			if (CSs.size() == 0) { cout << "You haven't added any compressor stations yet\n"; }
-			else {
-
-				cout << SelecetObject(CSs);
-
+			for (const auto& it : CSs) {
+				cout << it.second;
 			}
 			break;
 		}
 		case 4:
 		{
-			Pipe p = SelecetObject(pipes);
-			if (pipes.size() != 0) {
-				p.edit_Pipe();
-			}
-			else {
-				cout << "You haven't added any pipes yet" << endl;
-			}
+			//Pipe p = SelecetObject(pipes);
+			//if (pipes.size() != 0) {
+			//	p.edit_Pipe();
+			//}
+			//else {
+			//	cout << "You haven't added any pipes yet" << endl;
+			//}
+
+			//cout << "Pipe id: " << endl;
+			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::Maxid, "Pipe id: ","Incorrect value"));
+			if (iter == pipes.end())
+				cout << "Truba is not found" << endl;
+			else
+				iter->second.edit_Pipe();
 			break;
 		}
 		case 5:
 		{
-			CS cs = SelecetObject(CSs);
-			if (CSs.size() != 0) 
-			{
-				cs.edit_CS();
+			//CS cs = SelecetObject(CSs);
+			//if (CSs.size() != 0) 
+			//{
+			//	cs.edit_CS();
+			//}
+			//else 
+			//{
+			//	cout << "You haven't added any compressor stations yet" << endl;
+			//}
+			cout << "Compressor id: " << endl;
+			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::Maxid, "Compressor id: ", "Incorrect value"));
+			if (iter == CSs.end()) {
+				cout << "Compressor doesnt exist" << endl;
 			}
-			else 
-			{
-				cout << "You haven't added any compressor stations yet" << endl;
+			else {
+				iter->second.edit_CS();	
 			}
+
 			break;
 		}
 		case 6:
@@ -322,6 +311,56 @@ int main()
 		case 7:
 		{
 			load_from_file(pipes, CSs);
+			break;
+		}
+		case 8: {
+			cout << "Vvedite name " << endl;
+			string name;
+			cin.ignore(256, '\n');
+			getline(cin, name, '\n');
+			for (int i : FindPipeByFilter<string>(pipes, CheckByName, name)) {
+				cout << pipes.find(i)->second << endl;
+			}
+			break;
+		}
+		case 9: {
+			for (int i : FindPipeByFilter(pipes, CheckByStatus, true)) {
+				cout << pipes.find(i)->second << endl;
+			}
+			break;
+		}
+		case 10: {
+			cout << "Vvedite name " << endl;
+			string name;
+			cin.ignore(256, '\n');
+			getline(cin, name, '\n');
+			for (int i : FindCompressorByFilter<string>(CSs, CheckByName, name)) {
+				cout << CSs.find(i)->second << endl;
+			}
+			break;
+		}
+		case 11: {
+			cout << "Vvedite percent ne rabot cehov:  " << endl;
+			for (int i : FindCompressorByFilter(CSs, CheckByPercent, proverka(0.0, 100.0,"Vvedite percent ne rabot cehov:  ", "InCorecct value" ))) {
+				cout << CSs[i] << endl;
+			}
+			break;
+		}
+		case 12: {
+			PacketRedactTrub(pipes);
+			break;
+		}
+		case 13: {
+			while (1) {
+				cout << "Id to delete" << endl;
+				if (del(pipes, proverka(0, Pipe::Maxid, "Id to delete", "InCorecct value")))
+					cout << "Truba ydalena" << endl;
+				else
+					cout << "Truba is not found" << endl;
+				//cout << "Delete another one?" << endl << "\t 0. Net" << endl << "\t 1. Da" << endl;
+				if (proverka(0, 1, "Delete another one? 0-No; 1-Yes", "InCorecct value") == 0)
+					break;
+			}
 			break;
 		}
 		case 0:

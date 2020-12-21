@@ -4,62 +4,44 @@
 #include <fstream>
 #include "utils.h"
 
+int CS::Maxid = 0;
+
 int CS::Getid() const
 {
 	return id;
 }
 
-void CS::Setid(int new_id)
-{
-	id = new_id;
-}
 
 std::string CS::GetName() const
 {
 	return Name;
 }
 
-void CS::SetName(std::string new_name)
-{
-	Name = new_name;
-}
 
 int CS::GetWorking() const
 {
 	return amount_running_workshops;
 }
 
-void CS::SetWorking(int new_amount)
-{
-	amount_running_workshops = new_amount;
-}
 
 int CS::GetWorkshops() const
 {
 	return amount_workshops;
 }
 
-void CS::SetWorkshops(int amount)
-{
-	amount_workshops = amount;
-}
 
 double CS::GetEfficiency() const
 {
 	return efficiency;
 }
 
-void CS::SetEfficiency(double new_efficienty)
-{
-	efficiency = new_efficienty;
-}
 
-void CS::edit_CS(CS& cs)
+void CS::edit_CS()
 {
-	int k = proverka(0, cs.amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
-	cs.amount_running_workshops = k;
-	std::cout << "The number of running workshops at the compressor station " << cs.id
-		<< "\nwas changed to " << cs.amount_running_workshops << std::endl;
+	int k = proverka(0, amount_workshops, "Type the amount of running workshops\n", "Incorrect number of running workshops\n");
+	amount_running_workshops = k;
+	std::cout << "The number of running workshops at the compressor station " << id
+		<< "\nwas changed to " << amount_running_workshops << std::endl;
 }
 
 

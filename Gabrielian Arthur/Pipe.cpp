@@ -2,35 +2,22 @@
 #include <iostream>
 #include "utils.h"
 
-//int Pipe::Maxid = 0;
+int Pipe::Maxid = 0;
 
 int Pipe::Getid() const
 {
 	return id;
 }
 
-void Pipe::Setid(int new_id)
-{
-	id = new_id;
-}
 std::
 string Pipe::GetName() const
 {
 	return Name;
 }
 
-void Pipe::SetName(std::string new_name)
-{
-	Name = new_name;
-}
 int Pipe::GetDiametr() const
 {
 	return diametr;
-}
-
-void Pipe::SetDiametr(int new_diametr)
-{
-	diametr =new_diametr;
 }
 
 int Pipe::GetLength() const
@@ -38,25 +25,16 @@ int Pipe::GetLength() const
 	return length;
 }
 
-void Pipe::SetLength(int new_length)
-{
-	length = new_length;
-}
 
 bool Pipe::GetStatus() const
 {
 	return is_broken;
 }
 
-void Pipe::SetStatus(bool status)
+void Pipe::edit_Pipe()
 {
-	is_broken = status;
-}
-
-void Pipe::edit_Pipe(Pipe& pipe)
-{
-   pipe.is_broken = !pipe.is_broken;
-   std::cout << "Pipe status was changed to: " << pipe.is_broken << std::endl;
+   is_broken = !is_broken;
+   std::cout << "Pipe status was changed to: " << is_broken << std::endl;
 }
 
 std::ostream& operator << (std::ostream& out, const Pipe& p) 

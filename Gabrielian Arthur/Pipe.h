@@ -7,7 +7,7 @@
 
 class Pipe
 {
-	static int Maxid;
+	
 	int id;
 	std::string Name;
 	int diametr;
@@ -15,28 +15,22 @@ class Pipe
 	bool is_broken;
 
 public:
+    static int Maxid;
 
 	int Getid() const;
-	void Setid(int);
 
 	std::string GetName() const;
-	void SetName(std::string);
 
 	int GetDiametr() const;
-	void SetDiametr(int);
 
 	int GetLength() const;
-	void SetLength(int);
 
 	bool GetStatus() const;
-	void SetStatus(bool);
 
-	void edit_Pipe(Pipe& pipe);
+	void edit_Pipe();
 
 	friend std::ostream& operator << (std::ostream& out, const Pipe& p);
 	friend std::istream& operator >> (std::istream& in, Pipe& p);
-
-
 	friend std::ofstream& operator << (std::ofstream& out, const Pipe& p);
 	friend std::ifstream& operator >> (std::ifstream& in, Pipe& p);
 
