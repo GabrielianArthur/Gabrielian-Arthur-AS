@@ -132,8 +132,8 @@ vector<int> FindCompressorByFilter(const unordered_map<int, CS>& map, FilterC<T>
 
 void PacketRedactTrub(unordered_map<int, Pipe>& map) {
 	cout << "\tSelect thу pipe in order to edit: " << endl;
-	cout << "\t1. Po statusu v remonte" << endl;
-	cout << "\t2. Po statusu ne v remonte" << endl;
+	cout << "\t1. Po statusu ne v remonte" << endl;
+	cout << "\t2. Po statusu v remonte" << endl;
 	cout << "\t3. Po viboru polzovatelya" << endl;
 	cout << "\t0. Back" << endl;
 	switch (proverka(0, 3))
@@ -326,6 +326,21 @@ int main()
 					break;
 			}
 			break;
+
+		}
+		case 14: {
+			while (1) {
+				cout << "Enter the id " << endl;
+				if (del(CSs, proverka(0, CS::GetMaxid())))
+					cout << "CS is deleted" << endl;
+				else
+					cout << "CS doesn't exist" << endl;
+				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
+				if (proverka(0, 1) == 0)
+					break;
+			}
+			break;
+
 		}
 		case 15: {
 			cout << "Enter CS id" << endl;

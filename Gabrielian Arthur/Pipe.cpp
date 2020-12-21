@@ -80,6 +80,8 @@ std::ostream& operator << (std::ostream& out, const Pipe& p)
 		out << "Length: " << p.length << std::endl;
 		out << "id: " << p.id << std::endl;
 		out << (p.is_broken ? "Under repair" : "Not in repair") << std::endl;
+		out << "start: " << p.start << std::endl;
+		out << "end: " << p.end << std::endl;
 	}
 	else {
 		std::cout << "Pipe doesnt exist" << std::endl;
@@ -95,13 +97,13 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 	p.length = proverka(0, 100000);
 	std::cout << "Type pipe diametr" << std::endl;
 	p.diametr = proverka(0, 100000);
-	p.is_broken = false;
+	p.is_broken = false;	
 	return in;
 }
 
 std::ofstream& operator << (std::ofstream& out, const Pipe& p)
 {
-	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl;
+	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl << p.start << std::endl << p.end << std::endl;
 	return out;
 }
 
@@ -110,7 +112,7 @@ std::ifstream& operator >> (std::ifstream& in, Pipe& p)
 {
 	in.ignore(256, '\n');
 	std::getline(in, p.Name);
-	in >> p.diametr >> p.length >> p.is_broken;
+	in >> p.diametr >> p.length >> p.is_broken >> p.end >> p.start;
 	return in;
 }
 

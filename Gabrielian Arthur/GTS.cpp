@@ -54,13 +54,19 @@ void GTS::ConnectEdges(unordered_map<int, CS>& mapCS, unordered_map<int, Pipe>& 
 {
 	cout << "Enter start CS: " << endl;
 	int CSId1 = proverka(0, CS::GetMaxid());
+
+	//IdIndexCS.insert({ id, edges.size() - 1 });
+
 	cout << "Enter pipe" << endl;
 	int pipeId = proverka(0, Pipe::GetMaxid()); 
+
+	//IdIndexPipe.insert({ id, vertex.size() - 1 });
+
 	cout << "Enter end CS: " << endl;
 	int CSId2 = proverka(0, CS::GetMaxid());
 	mapPipe.find(pipeId)->second.SetStart(CSId1);
 	mapPipe.find(pipeId)->second.SetEnd(CSId2);
-	cout << "CS: " << CSId1 << " was connected with CS: " << CSId2 << "by Pipe with id: " << pipeId << endl;
+	cout << "CS: " << CSId1 << " was connected with CS: " << CSId2 << " by Pipe with id: " << pipeId << endl;
 	//mapPipe.find(pipeId)->second.ChangeUsed();
 	is_changed = true;
 }

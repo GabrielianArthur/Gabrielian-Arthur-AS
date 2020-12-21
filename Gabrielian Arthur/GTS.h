@@ -14,13 +14,14 @@ class GTS
 {
 	unordered_set<int> edges;
 	unordered_set<int> vertex; 
-
+	//unordered_set<int>
 	unordered_map<int, int> IdIndexCS;
 	unordered_map<int, int> IdIndexPipe;
 
 	vector<vector<int>> AdjacencyMatrix;
 	vector<vector<int>> IncidenceMatrix;
 	bool is_changed;
+
 
 public:
 	void UpdateIndex();
