@@ -14,13 +14,13 @@ class Pipe
 	int length;
 	double Weight;
 	bool is_broken;
-
+	static int Maxid;
 	int start;
 	int end;
 	bool used;
 
 public:
-    static int Maxid;
+	static int GetMaxid();
 
 	int Getid() const;
 
@@ -40,7 +40,7 @@ public:
 	int GetStart() const;
 	int GetEnd() const;
 
-	//void ChangeUsed();
+	void editChange();
 
 	void edit_Pipe();
 

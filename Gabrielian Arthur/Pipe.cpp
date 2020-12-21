@@ -1,5 +1,6 @@
 #include "Pipe.h"
 #include <iostream>
+#include <fstream>
 #include "utils.h"
 
 int Pipe::Maxid = 0;
@@ -13,6 +14,11 @@ std::
 string Pipe::GetName() const
 {
 	return Name;
+}
+
+int Pipe::GetMaxid()
+{
+	return Maxid;
 }
 
 int Pipe::GetDiametr() const
@@ -29,6 +35,11 @@ int Pipe::GetLength() const
 bool Pipe::GetStatus() const
 {
 	return is_broken;
+}
+
+double Pipe::GetWeight() const
+{
+	return length;
 }
 
 void Pipe::SetStart(int new_start)
@@ -55,7 +66,7 @@ void Pipe::edit_Pipe()
    is_broken = !is_broken;
 }
 
-void Pipe::ChangeUsed()
+void Pipe::editChange()
 {
 	used = !used;
 }
@@ -90,7 +101,7 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 
 std::ofstream& operator << (std::ofstream& out, const Pipe& p)
 {
-	out << p.GetName() << std::endl << p.GetDiametr() << std::endl << p.GetLength() << std::endl << p.GetStatus() << std::endl;
+	out << p.Name() << std::endl << p.diametr() << std::endl << p.length() << std::endl << p.is_broken() << std::endl;
 	return out;
 }
 

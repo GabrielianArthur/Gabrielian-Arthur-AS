@@ -21,7 +21,11 @@ class GTS
 	bool is_changed;
 
 public:
+	void UpdateIndexCS();
+
 	int GetCsIndex(int) const;
+
+	int GetCsId(int) const;
 
 	void AddCS(const unordered_map<int, CS>&, int);
 

@@ -11,6 +11,10 @@ int CS::Getid() const
 	return id;
 }
 
+int CS::GetMaxid()
+{
+	return Maxid;
+}
 
 std::string CS::GetName() const
 {
@@ -81,7 +85,7 @@ std::ostream& operator << (std::ostream& out, const CS& c) {
 
 std::ofstream& operator<<(std::ofstream& out, const CS& c)
 {
-	out << c.GetName() << std::endl << c.GetWorkshops() << std::endl << c.GetWorking() << std::endl << c.GetEfficiency() << std::endl;
+	out << c.Name() << std::endl << c.amount_workshops() << std::endl << c.amount_running_workshops() << std::endl << c.efficiency() << std::endl;
 	return out;
 }
 

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "Pipe.h"
 #include "Compressor.h"
+#include "GTS.h"
 
 using namespace std;
 
@@ -176,7 +177,7 @@ bool del(unordered_map<int, T>& map, int id) {
 int main()
 {
 	//setlocale(LC_ALL, "Russian");
-
+	GTS GTS;
 	unordered_map <int, Pipe> pipes;
 	unordered_map <int, CS> CSs;
 
@@ -185,7 +186,7 @@ int main()
 	{
 		cout << "Select action:" << endl;
 		print_menu();
-		i = proverka(0, 14);
+		i = proverka(0, 18);
 		switch (i)
 		{
 		case 1:
@@ -253,7 +254,7 @@ int main()
 			//	cout << "You haven't added any compressor stations yet" << endl;
 			//}
 			cout << "Compressor id: " << endl;
-			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::Maxid));
+			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid));
 			if (iter == CSs.end()) {
 				cout << "Compressor doesnt exist" << endl;
 			}
@@ -313,7 +314,7 @@ int main()
 		case 13: {
 			while (1) {
 				cout << "Id to delete" << endl;
-				if (del(pipes, proverka(0, Pipe::Maxid)))
+				if (del(pipes, proverka(0, Pipe::GetMaxid)))
 					cout << "Pipe is deleted" << endl;
 				else
 					cout << "Truba is not found" << endl;
@@ -323,6 +324,26 @@ int main()
 			}
 			break;
 		}
+		case 15: {
+			cout << "Enter CS id" << endl;
+			GTS.AddCS(CSs, proverka(0, CS::GetMaxid()));
+			break;
+		}
+		case 16: {
+			cout << "Enter Pipe id" << endl;
+			GTS.AddPipe(pipes, proverka(0, Pipe::GetMaxid()));
+			break;
+		}
+		case 17: {
+			GTS.ConnectEdges(CSs, pipes);
+			break;
+		}
+		case 18: {
+			GTS.CreateAdjacencyMatrix(CSs, pipes);
+			GTS.TopSort();
+			break;
+		}
+
 		case 0:
 		{
 			cout << "Bye!!!";

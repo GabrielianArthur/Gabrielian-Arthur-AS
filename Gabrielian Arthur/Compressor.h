@@ -11,11 +11,14 @@ class CS
 	int amount_workshops;
 	int amount_running_workshops;
 	float efficiency;
+    static int Maxid;
 
 public:
 	double GetPercentWorkingWorkshops() const;
 
-	static int Maxid;
+	static int GetMaxid();
+
+	
 
 	int Getid() const;
 
