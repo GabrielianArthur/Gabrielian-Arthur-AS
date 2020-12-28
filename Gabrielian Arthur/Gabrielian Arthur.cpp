@@ -8,6 +8,9 @@
 #include "Compressor.h"
 #include "GTS.h"
 #include "utils.h"
+#include <conio.h>
+#include <windows.h>
+
 
 
 using namespace std;
@@ -80,10 +83,12 @@ void print_menu() {
 	cout << "12. Batch editing of pipes" << endl;
 	cout << "13. Delete Pipe" << endl;
 	cout << "14. Delete CS" << endl;
-	cout << "15. Add CS to GTS" << endl;
-	cout << "16. Add Pipe to GTS" << endl;
-	cout << "17. Connect CSs" << endl;
-	cout << "18. Topologycal sort" << endl;
+	cout << "15. Establish a connection\n";
+	cout << "16. Delete a link\n";
+	cout << "17. Display GTS\n";
+	cout << "18. Topologycal sort\n";
+	cout << "19. To find the shortest path\n";
+	cout << "20. Find the maximum flow\n";
 	cout << "0. Exit\n";
 }
 
@@ -179,8 +184,9 @@ bool del(unordered_map<int, T>& map, int id) {
 
 int main()
 {
-	//setlocale(LC_ALL, "Russian");
-	GTS GTS;
+	setlocale(LC_ALL, "Russian");
+	GTS gts=GTS();
+	int edgeCount = 0;
 	unordered_map <int, Pipe> pipes;
 	unordered_map <int, CS> CSs;
 
@@ -229,14 +235,6 @@ int main()
 		}
 		case 4:
 		{
-			//Pipe p = SelecetObject(pipes);
-			//if (pipes.size() != 0) {
-			//	p.edit_Pipe();
-			//}
-			//else {
-			//	cout << "You haven't added any pipes yet" << endl;
-			//}
-
 			cout << "Pipe id: " << endl;
 			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::GetMaxid()));
 			if (iter == pipes.end())
@@ -247,35 +245,72 @@ int main()
 		}
 		case 5:
 		{
-			//CS cs = SelecetObject(CSs);
-			//if (CSs.size() != 0) 
-			//{
-			//	cs.edit_CS();
-			//}
-			//else 
-			//{
-			//	cout << "You haven't added any compressor stations yet" << endl;
-			//}
+
 			cout << "Compressor id: " << endl;
 			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid()));
 			if (iter == CSs.end()) {
 				cout << "Compressor doesnt exist" << endl;
 			}
 			else {
-				iter->second.edit_CS();	
+				iter->second.edit_CS();
 			}
 
 			break;
 		}
 		case 6:
 		{
-			save_to_file(pipes, CSs);
+			//PrintTitle("СОХРАНИТЬ");
+			if (gts.HasPipe() == false && gts.HasCs() == false)
+			{
+				cout << "Внимание! У Вас ни одной трубы и КС. Вы действительно хотите сохранить данные?\n";
+				int input;
+				proverka2(input, "(1 - да, 0 и пр. - нет): ");
+				if (input != 1)
+				{
+					cout << "Отмена сохранения...\n";
+					break;
+				}
+			}
+			string filename;
+			cout << "Введите имя файла сохранения: ";
+			cin >> filename;
+			ofstream fout;
+			fout.open(filename, ios::out);
+			if (fout.is_open())
+			{
+				gts.SaveToFile(fout);
+				fout.close();
+				cout << "Файл успешно сохранён!\n";
+			}
+			else
+			{
+				cout << "Ошибка сохранения файла!\n";
+			}
 			break;
 		}
+		/*save_to_file(pipes, CSs);
+		break;*/
 		case 7:
 		{
-			load_from_file(pipes, CSs);
+			//PrintTitle("ЗАГРУЗИТЬ");
+			string filename;
+			cout << "Введите имя файла загрузки: ";
+			cin >> filename;
+			ifstream fin;
+			fin.open(filename, ios::in);
+			if (fin.is_open())
+			{
+				gts = GTS(fin);
+				fin.close();
+				cout << "Файл успешно загружен!\n";
+			}
+			else
+			{
+				cout << "Ошибка сохранения файла!\n";
+			}
 			break;
+			//load_from_file(pipes, CSs);
+			//break;
 		}
 		case 8: {
 			cout << "Type name " << endl;
@@ -343,22 +378,49 @@ int main()
 
 		}
 		case 15: {
-			cout << "Enter CS id" << endl;
-			GTS.AddCS(CSs, proverka(0, CS::GetMaxid()));
+			//cout << "Enter CS id" << endl;
+			//GTS.AddCS(CSs, proverka(0, CS::GetMaxid()));
+			//break;
+			if (gts.HasPipe() && gts.HasCs(2))
+				gts.ConnectPipe();
+			else
+				cout << "У Вас нет труб и КС для связи.\n";
+			break;
+			gts.TopologicalSort();
 			break;
 		}
 		case 16: {
-			cout << "Enter Pipe id" << endl;
-			GTS.AddPipe(pipes, proverka(0, Pipe::GetMaxid()));
+			//cout << "Enter Pipe id" << endl;
+			//GTS.AddPipe(pipes, proverka(0, Pipe::GetMaxid()));
+			//break;
+			if (gts.HasPipe() && gts.HasCs(2))
+				gts.ConnectPipe();
+			else
+				cout << "У Вас нет связей\n";
 			break;
 		}
 		case 17: {
-			GTS.ConnectEdges(CSs, pipes);
+			gts.ShowNetwork();
 			break;
 		}
 		case 18: {
-			GTS.CreateAdjacencyMatrix(CSs, pipes);
-			GTS.TopSort();
+			gts.TopologicalSort();
+			//break;
+			//GTS.CreateAdjacencyMatrix(CSs, pipes);
+			//GTS.TopSort();
+			break;
+		}
+		case 19:
+		{
+			//PrintTitle("НАЙТИ КРАТЧАЙШИЕ ПУТИ");
+			gts.FindShortestPath();
+			break;
+		}
+
+		case 20:
+		{
+			//PrintTitle("НАЙТИ МАКСИМАЛЬНЫЙ ПОТОК");
+			gts.FindMaxFlow();
 			break;
 		}
 

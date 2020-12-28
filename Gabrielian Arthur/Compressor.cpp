@@ -4,7 +4,18 @@
 #include <fstream>
 #include "utils.h"
 
+int CS::csMaxid = 0;
 int CS::Maxid = 0;
+
+CS::CS(std::ifstream& fin)
+{
+	fin.ignore();
+	std::getline(fin, Name);
+	fin >> id
+		>> amount_workshops
+		>> amount_running_workshops
+		>> efficiency;
+}
 
 int CS::Getid() const
 {
@@ -50,9 +61,16 @@ void CS::edit_CS()
 	amount_running_workshops = k;
 	std::cout << "The number of running workshops at the compressor station " << id
 		<< "\nwas changed to " << amount_running_workshops << std::endl;
+	/*std::cout << "The number of running workshops at the compressor station was changed to " << amount_running_workshops << std::endl;*/
 }
 
-
+void CS::SaveToFile(std::ofstream& fout)
+{
+	fout << Name << '\n'
+		<< amount_workshops << '\n'
+		<< amount_running_workshops << '\n'
+		<< efficiency << '\n';
+}
 
 std::istream& operator >> (std::istream& in, CS& c) {
 	std::cout << "Type name:" << std::endl;
@@ -83,7 +101,7 @@ std::ostream& operator << (std::ostream& out, const CS& c) {
 }
 
 
-std::ofstream& operator<<(std::ofstream& out, const CS& c)
+/*std::ofstream& operator<<(std::ofstream& out, const CS& c)
 {
 	out << c.Name << std::endl << c.amount_workshops << std::endl << c.amount_running_workshops << std::endl << c.efficiency << std::endl;
 	return out;
@@ -93,13 +111,13 @@ std::ifstream& operator>>(std::ifstream& in, CS& c)
 	in.ignore(256, '\n');
 	std::getline(in, c.Name);
 	in >> c.amount_workshops >> c.amount_running_workshops >> c.efficiency;
-	return in;
-}
+	*//*return in;
+}*/
 CS::CS()
 {
-	id = Maxid++;
+	//id = Maxid++;
 	Name = "Unknown";
-	amount_running_workshops = 0;
-	amount_workshops = 0;
-	efficiency = 0.0;
+	//amount_running_workshops = 0;
+	//amount_workshops = 0;
+	//efficiency = 0.0;
 }

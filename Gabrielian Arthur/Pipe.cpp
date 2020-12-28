@@ -3,7 +3,16 @@
 #include <fstream>
 #include "utils.h"
 
+
+std::string Name;
+int diametr;
+int length;
+bool is_broken;
+int startid;
+int endid;
+int Pipe::pMaxId = 0;
 int Pipe::Maxid = 0;
+
 
 int Pipe::Getid() const
 {
@@ -37,30 +46,49 @@ bool Pipe::GetStatus() const
 	return is_broken;
 }
 
-double Pipe::GetWeight() const
+int Pipe::GetProductivity() const
 {
-	return length;
+	return sqrt(pow(diametr, 5 / length)) * 10;
 }
 
-void Pipe::SetStart(int new_start)
+//double Pipe::GetWeight() const
+//{
+//	return length;
+//}
+//
+//void Pipe::SetStart(int new_start)
+//{
+//	start = new_start;
+//}
+//
+//void Pipe::SetEnd(int new_end)
+//{
+//	end = new_end;
+//}
+
+//int Pipe::GetStart() const
+//{
+//	return start;
+//}
+//
+//int Pipe::GetEnd() const
+//{
+//	return end;
+//}
+
+Pipe::Pipe(std::ifstream& fin)
 {
-	start = new_start;
+	fin.ignore();
+	std::getline(fin, Name);
+	fin >> id
+		>> length
+		>> diametr
+		>> is_broken
+		>> startid
+		>> endid;
 }
 
-void Pipe::SetEnd(int new_end)
-{
-	end = new_end;
-}
 
-int Pipe::GetStart() const
-{
-	return start;
-}
-
-int Pipe::GetEnd() const
-{
-	return end;
-}
 void Pipe::edit_Pipe()
 {
    is_broken = !is_broken;
@@ -69,6 +97,15 @@ void Pipe::edit_Pipe()
 void Pipe::editChange()
 {
 	used = !used;
+}
+
+void Pipe::SaveToFile(std::ofstream& fout)
+{
+	fout << length << '\n'
+		<< diametr << '\n'
+		<< is_broken << '\n'
+		<< startid << '\n'
+		<< endid << '\n';
 }
 
 std::ostream& operator << (std::ostream& out, const Pipe& p) 
@@ -80,8 +117,8 @@ std::ostream& operator << (std::ostream& out, const Pipe& p)
 		out << "Length: " << p.length << std::endl;
 		out << "id: " << p.id << std::endl;
 		out << (p.is_broken ? "Under repair" : "Not in repair") << std::endl;
-		out << "start: " << p.start << std::endl;
-		out << "end: " << p.end << std::endl;
+		out << "startid: " << p.startid << std::endl;
+		out << "endid: " << p.endid << std::endl;
 	}
 	else {
 		std::cout << "Pipe doesnt exist" << std::endl;
@@ -98,33 +135,35 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 	std::cout << "Type pipe diametr" << std::endl;
 	p.diametr = proverka(0, 100000);
 	p.is_broken = false;	
+	p.startid = -1;
+	p.endid = -1;
 	return in;
 }
 
-std::ofstream& operator << (std::ofstream& out, const Pipe& p)
-{
-	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl << p.start << std::endl << p.end << std::endl;
-	return out;
-}
+//std::ofstream& operator << (std::ofstream& out, const Pipe& p)
+//{
+//	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl << p.start << std::endl << p.end << std::endl;
+//	return out;
+//}
 
 
-std::ifstream& operator >> (std::ifstream& in, Pipe& p)
-{
-	in.ignore(256, '\n');
-	std::getline(in, p.Name);
-	in >> p.diametr >> p.length >> p.is_broken >> p.end >> p.start;
-	return in;
-}
+//std::ifstream& operator >> (std::ifstream& in, Pipe& p)
+//{
+//	in.ignore(256, '\n');
+//	std::getline(in, p.Name);
+//	in >> p.diametr >> p.length >> p.is_broken >> p.end >> p.start;
+//	return in;
+//}
 
 
 Pipe::Pipe()
 {
-	id = Maxid++;
+	//id = Maxid++;
 	Name = "Unknown";
 	used = false;
-	length = 0;
-	diametr = 0;
-	is_broken = false;
-	start = -1;
-	end = -1;
+	//length = 0;
+	//diametr = 0;
+	//is_broken = false;
+	//start = -1;
+	//end = -1;
 }

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "utils.h"
+#include <cmath>
 
 
 class Pipe
@@ -12,33 +13,36 @@ class Pipe
 	std::string Name;
 	int diametr;
 	int length;
-	double Weight;
+	//double Weight;
 	bool is_broken;
 	static int Maxid;
-	int start;
-	int end;
+	//int start;
+	//int end;
 	bool used;
 
 public:
+	static int pMaxId;
+	int startid;
+	int endid;
 	static int GetMaxid();
 
 	int Getid() const;
 
 	std::string GetName() const;
 
-	int GetDiametr() const;
+	//int GetDiametr() const;
 
-	double GetWeight() const;
+	//double GetWeight() const;
 
-	int GetLength() const;
+	//int GetLength() const;
 
-	bool GetStatus() const;
+	//bool GetStatus() const;
 
-	void SetStart(int);
-	void SetEnd(int);
+	//void SetStart(int);
+	//void SetEnd(int);
 
-	int GetStart() const;
-	int GetEnd() const;
+	//int GetStart() const;
+	//int GetEnd() const;
 
 	void editChange();
 
@@ -46,9 +50,27 @@ public:
 
 	friend std::ostream& operator << (std::ostream& out, const Pipe& p);
 	friend std::istream& operator >> (std::istream& in, Pipe& p);
-	friend std::ofstream& operator << (std::ofstream& out, const Pipe& p);
-	friend std::ifstream& operator >> (std::ifstream& in, Pipe& p);
+	//friend std::ofstream& operator << (std::ofstream& out, const Pipe& p);
+	//friend std::ifstream& operator >> (std::ifstream& in, Pipe& p);
 
 	Pipe();
+
+	Pipe(std::ifstream& fin);
+	int GetProductivity() const;
+	int GetDiametr() const;
+	int GetLength() const;
+	bool GetStatus() const;
+	void SaveToFile(std::ofstream& fout);
+
+	/*{
+
+	public:
+
+		Pipe();
+
+		Pipe(std::ifstream & fin);
+		void Edit();
+		void Repair();
+	};*/
 };
 
