@@ -54,15 +54,14 @@ double CS::GetPercentWorkingWorkshops() const
 {
 	return  100.0 * (amount_workshops - amount_running_workshops) / amount_workshops;
 }
-void CS::edit_CS()
-{
-	std::cout << "Type amount workshops" << std::endl;
-	int k = proverka(0, amount_workshops);
-	amount_running_workshops = k;
-	std::cout << "The number of running workshops at the compressor station " << id
-		<< "\nwas changed to " << amount_running_workshops << std::endl;
-	/*std::cout << "The number of running workshops at the compressor station was changed to " << amount_running_workshops << std::endl;*/
-}
+//void CS::edit_CS()
+//{
+//	std::cout << "Type amount workshops" << std::endl;
+//	int k = proverka(0, amount_workshops);
+//	amount_running_workshops = k;
+//	std::cout << "The number of running workshops at the compressor station " << id
+//		<< "\nwas changed to " << amount_running_workshops << std::endl;
+//}
 
 void CS::SaveToFile(std::ofstream& fout)
 {
@@ -86,43 +85,24 @@ std::istream& operator >> (std::istream& in, CS& c) {
 }
 
 std::ostream& operator << (std::ostream& out, const CS& c) {
-	/*if (c.id >= 0) {*/
 		out << "\t COMPRESSOR info: " << std::endl;
 		out << "Name: " << c.Name << std::endl;
-		//out << "id: " << c.id << std::endl;
 		out << "Number of workshops: " << c.amount_workshops << std::endl;
 		out << "Number of working workshops: " << c.amount_running_workshops << std::endl;
 		out << "Efficienty: " << c.efficiency << std::endl;
-	/*}
-	else {
-		out << "Compressor doesnt exist" << std::endl;
-	}*/
 	return out;
 }
 
 
-//std::ofstream& operator<<(std::ofstream& out, const CS& c)
-//{
-//	out << c.Name << std::endl << c.amount_workshops << std::endl << c.amount_running_workshops << std::endl << c.efficiency << std::endl;
-//	return out;
-//}
-//std::ifstream& operator>>(std::ifstream& in, CS& c)
-//{
-//	in.ignore(256, '\n');
-//	std::getline(in, c.Name);
-//	in >> c.amount_workshops >> c.amount_running_workshops >> c.efficiency;
-//	return in;
-//}
-
 void CS::Edit_CS()
 {
-	std::cout << "Сейчас в КС работают " << amount_running_workshops << "/" << amount_workshops<< " цехов\n";
+	std::cout << "Now is working " << amount_running_workshops << "/" << amount_workshops<< " workshops\n";
 	int workingShopsCount;
-	proverka2(workingShopsCount, "Введите новое количество работающих цехов: ");
+	proverka2(workingShopsCount, "Enter new amount of working workshops: ");
 	while (workingShopsCount > amount_workshops)
 	{
-		std::cout << "Ошибка! Количество работающих цехов не может быть больше общего количества цехов\n";
-		proverka2(workingShopsCount, "Введите новое количество работающих цехов: ");
+		std::cout << "Error! The number of working workshops cannot be greater than the total number of workshops\n";
+		proverka2(workingShopsCount, "Enter new amount of working workshops: ");
 	}
 	amount_running_workshops = workingShopsCount;
 }

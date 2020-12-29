@@ -83,11 +83,7 @@ void print_menu() {
 	cout << "12. Batch editing of pipes" << endl;
 	cout << "13. Delete Pipe" << endl;
 	cout << "14. Delete CS" << endl;
-	//cout << "15. Add a pipe to GTS" << endl;
-	//cout << "16. Add a CS to GTS" << endl;
 	cout << "15. Establish a connection\n";
-	//cout << "18. Save GTS" << endl;
-	//cout << "19. Load GTS" << endl;
 	cout << "16. Delete a link\n";
 	cout << "17. Display GTS\n";
 	cout << "18. Topologycal sort\n";
@@ -199,16 +195,13 @@ int main()
 	{
 		cout << "Select action:" << endl;
 		print_menu();
-		i = proverka(0, 18);
+		i = proverka(0, 20);
 		switch (i)
 		{
 		case 1:
 		{
 			while (1) {
 				gts.AddPipe();
-			//	Pipe pipe;
-			//	cin >> pipe;
-			//	pipes.insert({ pipe.Getid(), pipe });
 				cout << "Add another one??" << endl << "\t 0. No" << endl << "\t 1. Yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -220,9 +213,6 @@ int main()
 		{
 			while (1) {
 				gts.AddCS();
-				//CS comp;
-				//cin >> comp;
-			//	CSs.insert({ comp.Getid(), comp });
 				cout << "Add another one??" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -232,12 +222,6 @@ int main()
 		case 3:
 		{
 			cout << gts;
-			//for (const auto& it : pipes) {
-			//	cout << it.second;
-			//}
-			//for (const auto& it : CSs) {
-			//	cout << it.second;
-			//}
 			break;
 		}
 		case 4:
@@ -245,50 +229,32 @@ int main()
 			if (gts.HasPipe())
 				gts.EditPipe();
 			else
-				cout << "У Вас нет труб для редактирования.\n";
+				cout << "You don't have any pipe\n";
 			break;
-			//cout << "Pipe id: " << endl;
-			//unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::GetMaxid()));
-			//if (iter == pipes.end())
-			//	cout << "Pipe  doesn't exist" << endl;
-			//else
-			//	iter->second.edit_Pipe();
-			//break;
 		}
 		case 5:
 		{
 			if (gts.HasCs())
 				gts.EditCs();
 			else
-				cout << "У Вас нет КС для редактирования.\n";
+				cout << "You don't have any CS\n";
 			break;
-			//cout << "Compressor id: " << endl;
-			//unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid()));
-			//if (iter == CSs.end()) {
-			//	cout << "Compressor doesnt exist" << endl;
-			//}
-			//else {
-			//	iter->second.edit_CS();
-			//}
-
-			//break;
 		}
 		case 6:
 		{
-			//PrintTitle("СОХРАНИТЬ");
 			if (gts.HasPipe() == false && gts.HasCs() == false)
 			{
-				cout << "Внимание! У Вас ни одной трубы и КС. Вы действительно хотите сохранить данные?\n";
+				cout << "You didn't add any pipe or CS. Do you really want to save the file?\n";
 				int input;
-				proverka2(input, "(1 - да, 0 и пр. - нет): ");
+				proverka2(input, "(1 - Yes, 0 and etc. - No): ");
 				if (input != 1)
 				{
-					cout << "Отмена сохранения...\n";
+					cout << "Cancel the save\n";
 					break;
 				}
 			}
 			string filename;
-			cout << "Введите имя файла сохранения: ";
+			cout << "Type filename: ";
 			cin >> filename;
 			ofstream fout;
 			fout.open(filename, ios::out);
@@ -296,21 +262,18 @@ int main()
 			{
 				gts.SaveToFile(fout);
 				fout.close();
-				cout << "Файл успешно сохранён!\n";
+				cout << "The file was saved successfully\n";
 			}
 			else
 			{
-				cout << "Ошибка сохранения файла!\n";
+				cout << "Error saving the file!\n";
 			}
 			break;
 		}
-			/*save_to_file(pipes, CSs);
-			break;*/
 		case 7:
 		{
-			//PrintTitle("ЗАГРУЗИТЬ");
 			string filename;
-			cout << "Введите имя файла загрузки: ";
+			cout << "Type filename: ";
 			cin >> filename;
 			ifstream fin;
 			fin.open(filename, ios::in);
@@ -318,15 +281,13 @@ int main()
 			{
 				gts = GTS(fin);
 				fin.close();
-				cout << "Файл успешно загружен!\n";
+				cout << "The file was uploaded successfully\n";
 			}
 			else
 			{
-				cout << "Ошибка сохранения файла!\n";
+				cout << "Error saving the file!\n";
 			}
 			break;
-		/*	load_from_file(pipes, CSs);
-			break;*/
 		}
 		case 8: {
 			cout << "Type name " << endl;
@@ -372,12 +333,6 @@ int main()
 				else
 					cout << "Pype doesn't exist.\n";
 				break;
-
-				//cout << "Enter the id " << endl;
-				//if (del(pipes, proverka(0, Pipe::GetMaxid())))
-				//	cout << "Pipe is deleted" << endl;
-				//else
-				//	cout << "Pype doesn't exist" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -392,11 +347,6 @@ int main()
 				else
 					cout << "CS doesn't exist.\n";
 				break;
-				//cout << "Enter the id " << endl;
-				//if (del(CSs, proverka(0, CS::GetMaxid())))
-				//	cout << "CS is deleted" << endl;
-				//else
-				//	cout << "CS doesn't exist" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -406,26 +356,20 @@ int main()
 		}
 
 		case 15: {
-			//cout << "Enter CS id" << endl;
-			//GTS.AddCS(CSs, proverka(0, CS::GetMaxid()));
-			//break;
 			if (gts.HasPipe() && gts.HasCs(2))
 				gts.ConnectPipe();
 			else
-				cout << "У Вас нет труб и КС для связи.\n";
+				cout << "You don't have any pipes and CS for linking.\n";
 			break;
 			gts.TopologicalSort();
 			break;
 		}
 
 		case 16: {
-			//cout << "Enter Pipe id" << endl;
-			//GTS.AddPipe(pipes, proverka(0, Pipe::GetMaxid()));
-			//break;
 			if (gts.HasPipe() && gts.HasCs(2))
-				gts.ConnectPipe();
+				gts.DisconnectPipe();
 			else
-				cout << "У Вас нет связей\n";
+				cout << "You don't have any linking\n";
 			break;
 		}
 		case 17: {
@@ -434,21 +378,16 @@ int main()
 		}
 		case 18: {
 			gts.TopologicalSort();
-			//break;
-			//GTS.CreateAdjacencyMatrix(CSs, pipes);
-			//GTS.TopSort();
 			break;
 		}
 		case 19:
 		{
-			//PrintTitle("НАЙТИ КРАТЧАЙШИЕ ПУТИ");
 			gts.FindShortestPath();
 			break;
 		}
 
 		case 20:
 		{
-			//PrintTitle("НАЙТИ МАКСИМАЛЬНЫЙ ПОТОК");
 			gts.FindMaxFlow();
 			break;
 		}

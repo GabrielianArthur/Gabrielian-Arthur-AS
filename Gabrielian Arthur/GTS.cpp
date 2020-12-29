@@ -214,7 +214,7 @@ void Dijkstra(const vector<vector<int>>& G, int N, int start, unordered_map<int,
 		}
 		else
 		{
-			cout << "Путь " << indexVertexes[start] << " -> " << indexVertexes[i] << " doesn't exist\n";
+			cout << "The path " << indexVertexes[start] << " -> " << indexVertexes[i] << " doesn't exist\n";
 		}
 }
 
@@ -269,50 +269,23 @@ void GTS::EditCs()
 	int id = GetInputId(csGroup);
 	if (id != -1)
 	{
-		cout << "\nЧто Вы хотите сделать с КС?\n"
-			<< "1 - Изменить количество работающих цехов\n"
-			<< "0 и пр. - Отмена\n";
+		cout << "\nWhat do you want to do with CS?\n"
+			<< "1 - Change the number of working workshops\n"
+			<< "0 and etc. - Exit\n";
 		int input;
-		proverka2(input, "Введите: ");
+		proverka2(input, "Enter: ");
 		switch (input)
 		{
 		case 1:
 			csGroup[id].Edit_CS();
 			break;
 		default:
-			cout << "Вы вышли из режима редактирования.";
+			cout << "You are out of editing mode.";
 			break;
 		}
 	}
 }
 
-
-//void GTS::UpdateIndex()
-//{
-//	int i = 0;
-//	for (auto iter = IdIndexCS.begin(); iter != IdIndexCS.end(); iter++) {
-//		iter->second = i;
-//		++i;
-//	}
-//	i = 0;
-//	for (auto iter = IdIndexPipe.begin(); iter != IdIndexPipe.end(); iter++) {
-//		iter->second = i;
-//	}
-//}
-//
-//int GTS::GetCsIndex(int id) const
-//{
-//	return IdIndexCS.find(id)->second;
-//}
-//
-//int GTS::GetCsId(int index) const
-//{
-//	for (auto iter = IdIndexCS.begin(); iter != IdIndexCS.end(); iter++) {
-//		if (iter->second == index)
-//			return iter->first;
-//	}
-//	return 0;
-//}
 
 void GTS::AddCS()
 {
@@ -335,7 +308,7 @@ void GTS::DeletePipe()
 	if (id != -1)
 	{
 		pGroup.erase(id);
-		cout << "Труба успешно удалена!\n";
+		cout << "The pipe successfully deleted!\n";
 	}
 }
 
@@ -345,78 +318,10 @@ void GTS::DeleteCs()
 	if (id != -1)
 	{
 		csGroup.erase(id);
-		cout << "КС успешно удалена!\n";
+		cout << "CS successfully deleted!\n";
 	}
 }
-//void GTS::ConnectEdges(unordered_map<int, CS>& mapCS, unordered_map<int, Pipe>& mapPipe)
-//{
-//	cout << "Enter start CS: " << endl;
-//	int CSId1 = proverka(0, CS::GetMaxid());
-//
-//	//IdIndexCS.insert({ id, edges.size() - 1 });
-//
-//	cout << "Enter pipe" << endl;
-//	int pipeId = proverka(0, Pipe::GetMaxid()); 
-//
-//	//IdIndexPipe.insert({ id, vertex.size() - 1 });
-//
-//	cout << "Enter end CS: " << endl;
-//	int CSId2 = proverka(0, CS::GetMaxid());
-//	mapPipe.find(pipeId)->second.SetStart(CSId1);
-//	mapPipe.find(pipeId)->second.SetEnd(CSId2);
-//	cout << "CS: " << CSId1 << " was connected with CS: " << CSId2 << " by Pipe with id: " << pipeId << endl;
-//	//mapPipe.find(pipeId)->second.ChangeUsed();
-//	is_changed = true;
-//}
-//
-//
-//void GTS::CreateAdjacencyMatrix(unordered_map<int, CS>& mapCS, unordered_map<int, Pipe>& mapPipe)
-//{
-//	int n = edges.size();
-//	if (is_changed) {
-//		UpdateIndex();
-//		AdjacencyMatrix.clear();
-//		AdjacencyMatrix.resize(n);
-//		for (int i = 0; i < n; i++) {
-//			AdjacencyMatrix[i].resize(n);
-//			is_changed = false;
-//		}
-//	}
-//	for (auto itr = mapPipe.begin(); itr != mapPipe.end(); itr++) {
-//		if (itr->second.GetStart() != -1) {
-//			AdjacencyMatrix[GetCsIndex(itr->second.GetStart())][GetCsIndex(itr->second.GetEnd())] = 1;
-//		}
-//	}
-//	for (int i = 0; i < n; i++) {  
-//		for (int j = 0; j < n; j++) {
-//			cout << AdjacencyMatrix[i][j] << " ";
-//		}
-//		cout << endl;
-//	}
-//}
-//
-//void GTS::DeleteEdge(int id, unordered_map<int, Pipe>& mapPipe)
-//{
-//	is_changed = true;
-//	edges.erase(id);
-//	IdIndexCS.erase(id);
-//
-//	for (auto iter = mapPipe.begin(); iter != mapPipe.end(); iter++) {
-//		if (iter->second.GetStart() == id || iter->second.GetEnd() == id) {
-//			DeleteVertex(iter->first);
-//			mapPipe.erase(iter->first);
-//			break;
-//		}
-//	}
-//}
-//
-//void GTS::DeleteVertex(int id)
-//{
-//	is_changed = true;
-//	vertex.erase(id);
-//	IdIndexPipe.erase(id);
-//
-//}
+
 
 bool GTS::HasPipe() const
 {
@@ -447,7 +352,7 @@ void GTS::TopologicalSort()
 
 		while (Stack.empty() == false)
 		{
-			cout << "CS " << indexVertexes[Stack.top()] << " -> ";
+			cout << indexVertexes[Stack.top()] << " -> CS ";
 			Stack.pop();
 		}
 	}
@@ -459,13 +364,13 @@ void GTS::ConnectPipe()
 	int id = GetInputId(pGroup);
 	if (id != -1)
 	{
-		cout << "КС, из которой выходит труба:\n";
+		cout << "CS from which the pipe comes out:\n";
 		int outCsId = GetInputId(csGroup);
-		cout << "КС, в которую входит труба:\n";
+		cout << "CS from which the pipe comes in:\n";
 		int inCsId = GetInputId(csGroup);
 		while (inCsId == outCsId)
 		{
-			cout << "Труба не может входить в ту же самую КС! Введите другой Id:\n";
+			cout << "The pipe cannot enter the same CS! Enter another ID:\n";
 			int inCsId = GetInputId(csGroup);
 		}
 		if (outCsId != -1 && inCsId != -1)
@@ -476,11 +381,11 @@ void GTS::ConnectPipe()
 	}
 	else
 	{
-		cout << "Выход из режима связи трубы с КС...\n";
+		cout << "Exiting the pipe-to-CS communication mode...\n";
 	}
 }
 
-void GTS::DisonnectPipe()
+void GTS::DisconnectPipe()
 {
 	int id = GetInputId(pGroup);
 	if (id != -1)
@@ -490,7 +395,7 @@ void GTS::DisonnectPipe()
 	}
 	else
 	{
-		cout << "Выход из режима связи трубы с КС...\n";
+		cout << "Exiting the pipe-to-CS communication mode...\n";
 	}
 }
 
@@ -622,26 +527,6 @@ void GTS::ShowNetwork()
 		if (CanBeUsed(p.second))
 			cout << "CS " << p.second.startid << " -> Pipe " << p.first << " -> CS " << p.second.endid << '\n';
 }
-//void GTS::TopSort()
-//{
-//	vector<int> colors;
-//	colors.resize(edges.size());
-//	vector<int> TopSortedVector;
-//	bool cycl = false;
-//	for (int i = 0; i < edges.size(); i++) {
-//		TopologicalSort(i, colors, cycl, TopSortedVector);
-//	}
-//	if (cycl) {
-//		cout << "There is cycle" << endl;
-//	}
-//	else {
-//		reverse(TopSortedVector.begin(), TopSortedVector.end());
-//		cout << "Topological sort: " << endl;
-//		for (int i = 0; i < TopSortedVector.size(); i++) {
-//			cout << TopSortedVector[i] << " ";
-//		}
-//		cout << endl;
-//	}
-//}
+
 
 GTS::GTS() { }
