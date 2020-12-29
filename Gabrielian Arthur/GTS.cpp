@@ -47,18 +47,18 @@ void GTS::SaveToFile(ofstream& fout)
 	}
 }
 
-ostream& operator << (ostream& out, const GTS& GTS)
+ostream& operator << (ostream& out, const GTS& gts)
 {
-	out << "Количество труб - " << GTS.pGroup.size() << "\n";
-	for (const pair<int, Pipe>& p : GTS.pGroup)
+	out << "The amount of pipes - " << gts.pGroup.size() << "\n";
+	for (const pair<int, Pipe>& p : gts.pGroup)
 	{
-		out << "Труба " << p.first << ".\n";
+		out << "Pipe " << p.first << ".\n";
 		out << p.second;
 	}
-	out << "Количество КС - " << GTS.csGroup.size() << "\n";
-	for (const pair<int, CS>& cs : GTS.csGroup)
+	out << "The amount of CS - " << gts.csGroup.size() << "\n";
+	for (const pair<int, CS>& cs : gts.csGroup)
 	{
-		out << "Компрессорная станция " << cs.first << ".\n";
+		out << "Compressor station " << cs.first << ".\n";
 		out << cs.second;
 	}
 	return out;
@@ -70,17 +70,17 @@ int GetInputId(const unordered_map<int, T>& objGroup)
 	int id;
 	while (true)
 	{
-		proverka2(id, "Введите ID: ");
+		proverka2(id, "Type ID: ");
 		if (id == 0)
 		{
-			cout << "Вы вышли из режима поиска по ID.\n";
+			cout << "You have exited ID search mode.\n";
 			return -1;
 		}
 		else if (objGroup.count(id))
 		{
 			return id;
 		}
-		cout << "Такого ID не существует. Пожалуйста, введите существующий ID.\n";
+		cout << "There is no such ID. Please enter an existing ID.\n";
 	}
 }
 
@@ -144,7 +144,7 @@ bool HasCycle(vector<vector<int>>& edges, int n)
 	}
 	else
 	{
-		cout << "Внимание! У графа есть цикл, дальнейшие действия невозможны!\n";
+		cout << "The graph has a cycle, no further action is possible!\n";
 		return true;
 	}
 }
@@ -203,18 +203,18 @@ void Dijkstra(const vector<vector<int>>& G, int N, int start, unordered_map<int,
 			}
 
 	}
-	printf("Кратчайшие пути:\n");
+	printf("The shortest paths:\n");
 	for (int i = 0; i < N; i++)
 		if (D[i] != INT_MAX)
 		{
 			cout << indexVertexes[start] << " -> " << indexVertexes[i] << " = " << D[i] << '\n';
-			cout << "   Путь лежит через вершины: ";
+			cout << "   The path lies through the vertices: ";
 			WritePath(T, start, i, indexVertexes);
 			cout << '\n';
 		}
 		else
 		{
-			cout << "Путь " << indexVertexes[start] << " -> " << indexVertexes[i] << " не существует\n";
+			cout << "Путь " << indexVertexes[start] << " -> " << indexVertexes[i] << " doesn't exist\n";
 		}
 }
 
@@ -246,16 +246,47 @@ void GTS::FindShortestPath()
 			graph[invertIndexVertexes[p.second.startid]][invertIndexVertexes[p.second.endid]] = p.second.GetLength();
 
 	int start;
-	proverka2(start, "Введите ID КС, из которой нужно посчитать пути (0 - выйти): ");
+	proverka2(start, "Type ID CS, from which you need to calculate the paths (0 - exit): ");
 	if (invertIndexVertexes.find(start) != invertIndexVertexes.end())
 		start = invertIndexVertexes[start];
 	else
 	{
-		cout << "Ошибка! Такой КС нет в сети((";
+		cout << "CS doesn't exist in the network!!";
 		return;
 	}
 	Dijkstra(graph, n, start, indexVertexes);
 }
+
+void GTS::EditPipe()
+{
+	int id = GetInputId(pGroup);
+	if (id != -1)
+		pGroup[id].Edit();
+}
+
+void GTS::EditCs()
+{
+	int id = GetInputId(csGroup);
+	if (id != -1)
+	{
+		cout << "\nЧто Вы хотите сделать с КС?\n"
+			<< "1 - Изменить количество работающих цехов\n"
+			<< "0 и пр. - Отмена\n";
+		int input;
+		proverka2(input, "Введите: ");
+		switch (input)
+		{
+		case 1:
+			csGroup[id].Edit_CS();
+			break;
+		default:
+			cout << "Вы вышли из режима редактирования.";
+			break;
+		}
+	}
+}
+
+
 //void GTS::UpdateIndex()
 //{
 //	int i = 0;
@@ -298,6 +329,25 @@ void GTS::AddPipe()
 
 }
 
+void GTS::DeletePipe()
+{
+	int id = GetInputId(pGroup);
+	if (id != -1)
+	{
+		pGroup.erase(id);
+		cout << "Труба успешно удалена!\n";
+	}
+}
+
+void GTS::DeleteCs()
+{
+	int id = GetInputId(csGroup);
+	if (id != -1)
+	{
+		csGroup.erase(id);
+		cout << "КС успешно удалена!\n";
+	}
+}
 //void GTS::ConnectEdges(unordered_map<int, CS>& mapCS, unordered_map<int, Pipe>& mapPipe)
 //{
 //	cout << "Enter start CS: " << endl;
@@ -397,7 +447,7 @@ void GTS::TopologicalSort()
 
 		while (Stack.empty() == false)
 		{
-			cout << "КС " << indexVertexes[Stack.top()] << " -> ";
+			cout << "CS " << indexVertexes[Stack.top()] << " -> ";
 			Stack.pop();
 		}
 	}
@@ -506,21 +556,21 @@ void GTS::FindMaxFlow()
 			graph[invertIndexVertexes[p.second.startid]][invertIndexVertexes[p.second.endid]] = p.second.GetProductivity();
 
 	int start;
-	proverka2(start, "Введите ID КС, из которой будет идти поток: ");
+	proverka2(start, "Enter the ID of the CS from which the stream will come: ");
 	if (invertIndexVertexes.find(start) != invertIndexVertexes.end())
 		start = invertIndexVertexes[start];
 	else
 	{
-		cout << "Ошибка! Такой КС нет в сети((";
+		cout << "CS doesn't exist in the network";
 		return;
 	}
 	int end;
-	proverka2(end, "Введите ID КС, в которую придёт поток: ");
+	proverka2(end, "Enter the ID of the CS to which the stream will come: ");
 	if (invertIndexVertexes.find(end) != invertIndexVertexes.end())
 		end = invertIndexVertexes[end];
 	else
 	{
-		cout << "Ошибка! Такой КС нет в сети((";
+		cout << "CS doesn't exist in the network";
 		return;
 	}
 
@@ -553,7 +603,7 @@ void GTS::FindMaxFlow()
 		}
 		maxflow += delta;
 	}
-	cout << "Максимальный поток: " << maxflow << endl;
+	cout << "Maximum flow: " << maxflow << endl;
 }
 
 
@@ -570,7 +620,7 @@ void GTS::ShowNetwork()
 {
 	for (const pair<int, Pipe>& p : pGroup)
 		if (CanBeUsed(p.second))
-			cout << "КС " << p.second.startid << " -- Труба " << p.first << " -> КС " << p.second.endid << '\n';
+			cout << "CS " << p.second.startid << " -> Pipe " << p.first << " -> CS " << p.second.endid << '\n';
 }
 //void GTS::TopSort()
 //{

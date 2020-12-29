@@ -36,7 +36,7 @@ public:
 	double GetEfficiency() const;
 
 	void edit_CS();
-
+	void Edit_CS();
 	friend std::ostream& operator << (std::ostream& out, const CS& c);
 	friend std::istream& operator >> (std::istream& in, CS& c);
 	//friend std::ofstream& operator << (std::ofstream& out, const CS& c);

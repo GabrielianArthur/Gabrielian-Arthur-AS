@@ -29,20 +29,7 @@ public:
 	int Getid() const;
 
 	std::string GetName() const;
-
-	//int GetDiametr() const;
-
 	//double GetWeight() const;
-
-	//int GetLength() const;
-
-	//bool GetStatus() const;
-
-	//void SetStart(int);
-	//void SetEnd(int);
-
-	//int GetStart() const;
-	//int GetEnd() const;
 
 	void editChange();
 
@@ -60,17 +47,9 @@ public:
 	int GetDiametr() const;
 	int GetLength() const;
 	bool GetStatus() const;
+	void Edit();
 	void SaveToFile(std::ofstream& fout);
+	void IsBroken();
 
-	/*{
-
-	public:
-
-		Pipe();
-
-		Pipe(std::ifstream & fin);
-		void Edit();
-		void Repair();
-	};*/
 };
 

@@ -11,7 +11,7 @@ CS::CS(std::ifstream& fin)
 {
 	fin.ignore();
 	std::getline(fin, Name);
-	fin >> id
+	fin
 		>> amount_workshops
 		>> amount_running_workshops
 		>> efficiency;
@@ -86,38 +86,51 @@ std::istream& operator >> (std::istream& in, CS& c) {
 }
 
 std::ostream& operator << (std::ostream& out, const CS& c) {
-	if (c.id >= 0) {
+	/*if (c.id >= 0) {*/
 		out << "\t COMPRESSOR info: " << std::endl;
 		out << "Name: " << c.Name << std::endl;
-		out << "id: " << c.id << std::endl;
+		//out << "id: " << c.id << std::endl;
 		out << "Number of workshops: " << c.amount_workshops << std::endl;
 		out << "Number of working workshops: " << c.amount_running_workshops << std::endl;
 		out << "Efficienty: " << c.efficiency << std::endl;
-	}
+	/*}
 	else {
 		out << "Compressor doesnt exist" << std::endl;
+	}*/
+	return out;
+}
+
+
+//std::ofstream& operator<<(std::ofstream& out, const CS& c)
+//{
+//	out << c.Name << std::endl << c.amount_workshops << std::endl << c.amount_running_workshops << std::endl << c.efficiency << std::endl;
+//	return out;
+//}
+//std::ifstream& operator>>(std::ifstream& in, CS& c)
+//{
+//	in.ignore(256, '\n');
+//	std::getline(in, c.Name);
+//	in >> c.amount_workshops >> c.amount_running_workshops >> c.efficiency;
+//	return in;
+//}
+
+void CS::Edit_CS()
+{
+	std::cout << "Сейчас в КС работают " << amount_running_workshops << "/" << amount_workshops<< " цехов\n";
+	int workingShopsCount;
+	proverka2(workingShopsCount, "Введите новое количество работающих цехов: ");
+	while (workingShopsCount > amount_workshops)
+	{
+		std::cout << "Ошибка! Количество работающих цехов не может быть больше общего количества цехов\n";
+		proverka2(workingShopsCount, "Введите новое количество работающих цехов: ");
 	}
-	return out;
+	amount_running_workshops = workingShopsCount;
 }
-
-
-/*std::ofstream& operator<<(std::ofstream& out, const CS& c)
-{
-	out << c.Name << std::endl << c.amount_workshops << std::endl << c.amount_running_workshops << std::endl << c.efficiency << std::endl;
-	return out;
-}
-std::ifstream& operator>>(std::ifstream& in, CS& c)
-{
-	in.ignore(256, '\n');
-	std::getline(in, c.Name);
-	in >> c.amount_workshops >> c.amount_running_workshops >> c.efficiency;
-	*//*return in;
-}*/
 CS::CS()
 {
-	//id = Maxid++;
+	id = Maxid++;
 	Name = "Unknown";
-	//amount_running_workshops = 0;
-	//amount_workshops = 0;
-	//efficiency = 0.0;
+	amount_running_workshops = 0;
+	amount_workshops = 0;
+	efficiency = 0.0;
 }

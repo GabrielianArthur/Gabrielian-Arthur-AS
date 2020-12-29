@@ -36,10 +36,10 @@ public:
 	void SaveToFile(ofstream& fout);
 	bool HasPipe() const;
 	bool HasCs(int count = 1) const;
-	//void EditPipe();
-	//void EditCs();
-	//void DeletePipe();
-	//void DeleteCs();
+	void EditPipe();
+	void EditCs();
+	void DeletePipe();
+	void DeleteCs();
 	//void SearchPipes();
 	//void SearchCss();
 	void ConnectPipe();
@@ -48,7 +48,7 @@ public:
 	void ShowNetwork();
 	void FindMaxFlow();
 	void FindShortestPath();
-	void UpdateIndex();
+	//void UpdateIndex();
 	void AddCS();
 	void AddPipe();
 	//void CreateAdjacencyMatrix(unordered_map<int, CS>&, unordered_map<int, Pipe>&);

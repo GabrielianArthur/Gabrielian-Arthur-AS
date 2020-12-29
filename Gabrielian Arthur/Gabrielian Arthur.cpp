@@ -83,7 +83,11 @@ void print_menu() {
 	cout << "12. Batch editing of pipes" << endl;
 	cout << "13. Delete Pipe" << endl;
 	cout << "14. Delete CS" << endl;
+	//cout << "15. Add a pipe to GTS" << endl;
+	//cout << "16. Add a CS to GTS" << endl;
 	cout << "15. Establish a connection\n";
+	//cout << "18. Save GTS" << endl;
+	//cout << "19. Load GTS" << endl;
 	cout << "16. Delete a link\n";
 	cout << "17. Display GTS\n";
 	cout << "18. Topologycal sort\n";
@@ -201,9 +205,10 @@ int main()
 		case 1:
 		{
 			while (1) {
-				Pipe pipe;
-				cin >> pipe;
-				pipes.insert({ pipe.Getid(), pipe });
+				gts.AddPipe();
+			//	Pipe pipe;
+			//	cin >> pipe;
+			//	pipes.insert({ pipe.Getid(), pipe });
 				cout << "Add another one??" << endl << "\t 0. No" << endl << "\t 1. Yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -214,9 +219,10 @@ int main()
 		case 2:
 		{
 			while (1) {
-				CS comp;
-				cin >> comp;
-				CSs.insert({ comp.Getid(), comp });
+				gts.AddCS();
+				//CS comp;
+				//cin >> comp;
+			//	CSs.insert({ comp.Getid(), comp });
 				cout << "Add another one??" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -225,37 +231,47 @@ int main()
 		}
 		case 3:
 		{
-			for (const auto& it : pipes) {
-				cout << it.second;
-			}
-			for (const auto& it : CSs) {
-				cout << it.second;
-			}
+			cout << gts;
+			//for (const auto& it : pipes) {
+			//	cout << it.second;
+			//}
+			//for (const auto& it : CSs) {
+			//	cout << it.second;
+			//}
 			break;
 		}
 		case 4:
 		{
-			cout << "Pipe id: " << endl;
-			unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::GetMaxid()));
-			if (iter == pipes.end())
-				cout << "Pipe  doesn't exist" << endl;
+			if (gts.HasPipe())
+				gts.EditPipe();
 			else
-				iter->second.edit_Pipe();
+				cout << "У Вас нет труб для редактирования.\n";
 			break;
+			//cout << "Pipe id: " << endl;
+			//unordered_map<int, Pipe>::iterator iter = pipes.find(proverka(0, Pipe::GetMaxid()));
+			//if (iter == pipes.end())
+			//	cout << "Pipe  doesn't exist" << endl;
+			//else
+			//	iter->second.edit_Pipe();
+			//break;
 		}
 		case 5:
 		{
-
-			cout << "Compressor id: " << endl;
-			unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid()));
-			if (iter == CSs.end()) {
-				cout << "Compressor doesnt exist" << endl;
-			}
-			else {
-				iter->second.edit_CS();
-			}
-
+			if (gts.HasCs())
+				gts.EditCs();
+			else
+				cout << "У Вас нет КС для редактирования.\n";
 			break;
+			//cout << "Compressor id: " << endl;
+			//unordered_map<int, CS>::iterator iter = CSs.find(proverka(0, CS::GetMaxid()));
+			//if (iter == CSs.end()) {
+			//	cout << "Compressor doesnt exist" << endl;
+			//}
+			//else {
+			//	iter->second.edit_CS();
+			//}
+
+			//break;
 		}
 		case 6:
 		{
@@ -288,8 +304,8 @@ int main()
 			}
 			break;
 		}
-		/*save_to_file(pipes, CSs);
-		break;*/
+			/*save_to_file(pipes, CSs);
+			break;*/
 		case 7:
 		{
 			//PrintTitle("ЗАГРУЗИТЬ");
@@ -309,8 +325,8 @@ int main()
 				cout << "Ошибка сохранения файла!\n";
 			}
 			break;
-			//load_from_file(pipes, CSs);
-			//break;
+		/*	load_from_file(pipes, CSs);
+			break;*/
 		}
 		case 8: {
 			cout << "Type name " << endl;
@@ -351,11 +367,17 @@ int main()
 		}
 		case 13: {
 			while (1) {
-				cout << "Enter the id " << endl;
-				if (del(pipes, proverka(0, Pipe::GetMaxid())))
-					cout << "Pipe is deleted" << endl;
+				if (gts.HasPipe())
+					gts.DeletePipe();
 				else
-					cout << "Pype doesn't exist" << endl;
+					cout << "Pype doesn't exist.\n";
+				break;
+
+				//cout << "Enter the id " << endl;
+				//if (del(pipes, proverka(0, Pipe::GetMaxid())))
+				//	cout << "Pipe is deleted" << endl;
+				//else
+				//	cout << "Pype doesn't exist" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -365,11 +387,16 @@ int main()
 		}
 		case 14: {
 			while (1) {
-				cout << "Enter the id " << endl;
-				if (del(CSs, proverka(0, CS::GetMaxid())))
-					cout << "CS is deleted" << endl;
+				if (gts.HasCs())
+					gts.DeleteCs();
 				else
-					cout << "CS doesn't exist" << endl;
+					cout << "CS doesn't exist.\n";
+				break;
+				//cout << "Enter the id " << endl;
+				//if (del(CSs, proverka(0, CS::GetMaxid())))
+				//	cout << "CS is deleted" << endl;
+				//else
+				//	cout << "CS doesn't exist" << endl;
 				cout << "Delete another one?" << endl << "\t 0. No" << endl << "\t 1. yes" << endl;
 				if (proverka(0, 1) == 0)
 					break;
@@ -377,6 +404,7 @@ int main()
 			break;
 
 		}
+
 		case 15: {
 			//cout << "Enter CS id" << endl;
 			//GTS.AddCS(CSs, proverka(0, CS::GetMaxid()));
@@ -389,6 +417,7 @@ int main()
 			gts.TopologicalSort();
 			break;
 		}
+
 		case 16: {
 			//cout << "Enter Pipe id" << endl;
 			//GTS.AddPipe(pipes, proverka(0, Pipe::GetMaxid()));

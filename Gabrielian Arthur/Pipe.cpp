@@ -55,32 +55,13 @@ int Pipe::GetProductivity() const
 //{
 //	return length;
 //}
-//
-//void Pipe::SetStart(int new_start)
-//{
-//	start = new_start;
-//}
-//
-//void Pipe::SetEnd(int new_end)
-//{
-//	end = new_end;
-//}
 
-//int Pipe::GetStart() const
-//{
-//	return start;
-//}
-//
-//int Pipe::GetEnd() const
-//{
-//	return end;
-//}
 
 Pipe::Pipe(std::ifstream& fin)
 {
 	fin.ignore();
 	std::getline(fin, Name);
-	fin >> id
+	fin 
 		>> length
 		>> diametr
 		>> is_broken
@@ -101,7 +82,8 @@ void Pipe::editChange()
 
 void Pipe::SaveToFile(std::ofstream& fout)
 {
-	fout << length << '\n'
+	fout << Name << '\n'
+		<< length << '\n'
 		<< diametr << '\n'
 		<< is_broken << '\n'
 		<< startid << '\n'
@@ -110,19 +92,20 @@ void Pipe::SaveToFile(std::ofstream& fout)
 
 std::ostream& operator << (std::ostream& out, const Pipe& p) 
 {
-	if (p.id >= 0) {
+	/*if (p.id >= 0) {*/
 		out << "\t PIPE info: " << std::endl;
 		out << "Name: " << p.Name << std::endl;
 		out << "Diameter: " << p.diametr << std::endl;
+		out << "Производительность: " << p.GetProductivity() << std::endl;
 		out << "Length: " << p.length << std::endl;
-		out << "id: " << p.id << std::endl;
+		//out << "id: " << p.id << std::endl;
 		out << (p.is_broken ? "Under repair" : "Not in repair") << std::endl;
-		out << "startid: " << p.startid << std::endl;
-		out << "endid: " << p.endid << std::endl;
-	}
-	else {
-		std::cout << "Pipe doesnt exist" << std::endl;
-	}
+	//	out << "startid: " << p.startid << std::endl;
+		//out << "endid: " << p.endid << std::endl;
+	//}
+	//else {
+	//	std::cout << "Pipe doesnt exist" << std::endl;
+	//}
 	return out;
 }
 
@@ -142,25 +125,53 @@ std::istream& operator >> (std::istream& in, Pipe& p) {
 
 //std::ofstream& operator << (std::ofstream& out, const Pipe& p)
 //{
-//	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl << p.start << std::endl << p.end << std::endl;
+//	out << p.Name << std::endl << p.diametr << std::endl << p.length << std::endl << p.is_broken << std::endl;
 //	return out;
 //}
-
-
+//
+//
 //std::ifstream& operator >> (std::ifstream& in, Pipe& p)
 //{
 //	in.ignore(256, '\n');
 //	std::getline(in, p.Name);
-//	in >> p.diametr >> p.length >> p.is_broken >> p.end >> p.start;
+//	in >> p.diametr >> p.length >> p.is_broken;
 //	return in;
 //}
 
-
+void Pipe::Edit()
+{
+	if (is_broken)
+		std::cout << "\nТруба не нуждается в ремонте.\n";
+	else
+		std::cout << "\nТруба сломана!\n";
+	std::cout << "Что Вы хотите сделать с трубой?\n"
+		<< "1 - Починить/Сломать\n"
+		<< "0 и пр. - Выйти\n";
+	int input;
+	proverka2(input, "Введите: ");
+	switch (input)
+	{
+	case 1:
+	{
+		is_broken = !is_broken;
+		std::cout << "Ремонт трубы успешно завершён!\n";
+	}
+	default:
+	{
+		std::cout << "Вы вышли из режима редактирования.\n";
+		break;
+	}
+	}
+}
+void Pipe::IsBroken()
+{
+	is_broken = false;
+}
 Pipe::Pipe()
 {
 	//id = Maxid++;
-	Name = "Unknown";
-	used = false;
+	//Name = "Unknown";
+	//used = false;
 	//length = 0;
 	//diametr = 0;
 	//is_broken = false;
